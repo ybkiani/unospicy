@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spice Up UNO ❤️</title>
+
+<style>
+:root {
+  --bg: #160b19;
+  --card: #29152d;
+  --pink: #ff4f87;
+  --gold: #ffd58a;
+  --text: #fff4f7;
+  --muted: #d7bdcf;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 24px 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at top, #532044 0%, transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  width: 100%;
+  max-width: 490px;
+  text-align: center;
+}
+
+.heart {
+  font-size: 42px;
+  margin-bottom: 5px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(29px, 8vw, 43px);
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 10px 0 24px;
+  line-height: 1.6;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin-bottom: 22px;
+}
+
+.pill {
+  border: 1px solid #68405d;
+  padding: 8px 12px;
+  border-radius: 25px;
+  font-size: 12px;
+  color: #f9dbe9;
+}
+
+.deck {
+  background: linear-gradient(145deg, #38203d, #201324);
+  border: 1px solid #78415f;
+  border-radius: 25px;
+  padding: 20px;
+  box-shadow: 0 18px 55px #0007;
+}
+
+.card {
+  min-height: 260px;
+  border-radius: 20px;
+  padding: 23px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fdf8fa;
+  color: #29152d;
+  transition: background .25s;
+}
+
+.card.red { background: #ffe1e8; }
+.card.blue { background: #dceaff; }
+.card.green { background: #dcf7e6; }
+.card.yellow { background: #fff0bd; }
+.card.special { background: #f3dfff; }
+
+.category {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: .75;
+}
+
+.activity {
+  font-size: clamp(23px, 6vw, 30px);
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 19px 0 12px;
+}
+
+.description {
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: 320px;
+}
+
+.card-symbol {
+  font-size: 28px;
+  margin-bottom: 7px;
+}
+
+button {
+  width: 100%;
+  border: none;
+  border-radius: 13px;
+  padding: 16px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .15s, opacity .15s;
+}
+
+button:active { transform: scale(.98); }
+
+.primary {
+  background: linear-gradient(100deg, #ff4f87, #ff826c);
+  color: white;
+  margin-top: 18px;
+  box-shadow: 0 6px 20px #ff4f8733;
+}
+
+.secondary {
+  background: #38223b;
+  color: #ffe4f0;
+  border: 1px solid #70415f;
+  margin-top: 10px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.buttons button {
+  font-size: 14px;
+  padding: 13px 8px;
+}
+
+.counter {
+  margin: 15px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.rules {
+  margin-top: 18px;
+  background: #211324;
+  border: 1px solid #492c48;
+  padding: 16px;
+  border-radius: 17px;
+  text-align: left;
+}
+
+.rules summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--gold);
+}
+
+.rules p, .rules li {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.footer {
+  font-size: 12px;
+  color: #b99bb3;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+<main class="app">
+
+  <div class="heart">❤️</div>
+  <h1>SPICE UP UNO</h1>
+  <p class="subtitle">
+    Two players. One deck. Unexpected surprises.<br>
+    Let the next card decide your little adventure.
+  </p>
+
+  <div class="pills">
+    <span class="pill">🔴 Kisses</span>
+    <span class="pill">🔵 Massages</span>
+    <span class="pill">🟢 Sensory Play</span>
+    <span class="pill">🟡 Playful Challenges</span>
+  </div>
+
+  <section class="deck">
+    <div class="card special" id="activityCard">
+      <div class="card-symbol" id="symbol">🃏</div>
+      <div class="category" id="category">YOUR NEXT CHALLENGE</div>
+      <div class="activity" id="activity">Ready to play?</div>
+      <div class="description" id="description">
+        Take turns, tap the button, and reveal your next activity.
+      </div>
+    </div>
+
+    <button class="primary" id="revealBtn" onclick="revealActivity()">
+      ✨ Reveal Activity
+    </button>
+
+    <div class="buttons">
+      <button class="secondary" onclick="repeatActivity()">
+        🔁 Do It Again
+      </button>
+      <button class="secondary" onclick="skipActivity()">
+        ⏭️ Skip Activity
+      </button>
+    </div>
+
+    <div class="counter" id="counter">
+      Your surprise deck is ready!
+    </div>
+  </section>
+
+  <details class="rules">
+    <summary>❤️ How to Play</summary>
+    <p>
+      1. Play regular UNO with your usual rules.<br>
+      2. After playing a card, tap Reveal Activity.<br>
+      3. Complete the revealed challenge together, if both agree.<br>
+      4. Take turns and enjoy the surprises.<br>
+      5. Use Skip whenever you like, with no penalty.
+    </p>
+    <p>
+      <b>Optional UNO twists:</b><br>
+      🔴 Red: A kissing challenge.<br>
+      🔵 Blue: A relaxing massage.<br>
+      🟢 Green: A sensory experience.<br>
+      🟡 Yellow: A playful couple's challenge.<br>
+      🃏 Wild: Choose a challenge together.<br>
+      +2: Add a little extra time to a mutually chosen activity.<br>
+      Reverse: Switch who gives and receives.<br>
+      Skip: Choose to pass on the activity.<br>
+      +4: Pick from four activities, then agree on one.
+    </p>
+    <p>
+      These twists are optional house rules. You can adapt them
+      to match the UNO cards you play.
+    </p>
+  </details>
+
+  <p class="footer">
+    Made for two people who love each other 💕<br>
+    Every activity is optional. Communication comes first.
+  </p>
+
+</main>
+
+<script>
+const activities = [
+  {
+    color: "red",
+    symbol: "💋",
+    category: "RED • KISSING",
+    title: "The 10-Second Kiss",
+    description: "Share a slow, affectionate kiss for 10 seconds."
+  },
+  {
+    color: "red",
+    symbol: "😘",
+    category: "RED • KISSING",
+    title: "Three Little Kisses",
+    description: "Give three kisses wherever your partner would enjoy them."
+  },
+  {
+    color: "red",
+    symbol: "❤️",
+    category: "RED • ROMANCE",
+    title: "The Favourite Thing",
+    description: "Kiss your partner and whisper one thing you adore about them."
+  },
+  {
+    color: "red",
+    symbol: "💋",
+    category: "RED • KISSING",
+    title: "Your Choice",
+    description: "Let your partner choose a mutually comfortable place for a kiss."
+  },
+  {
+    color: "red",
+    symbol: "🥰",
+    category: "RED • ROMANCE",
+    title: "The Movie Moment",
+    description: "Recreate a romantic movie moment together for 15 seconds."
+  },
+  {
+    color: "red",
+    symbol: "💕",
+    category: "RED • ROMANCE",
+    title: "Forehead Kiss",
+    description: "Give your partner a gentle forehead kiss and a warm hug."
+  },
+
+  {
+    color: "blue",
+    symbol: "💆",
+    category: "BLUE • MASSAGE",
+    title: "Shoulder Relaxation",
+    description: "Give your partner a gentle shoulder massage for 30 seconds."
+  },
+  {
+    color: "blue",
+    symbol: "🫶",
+    category: "BLUE • TOUCH",
+    title: "Hand in Hand",
+    description: "Hold hands and trace gentle patterns on each other's palms."
+  },
+  {
+    color: "blue",
+    symbol: "✨",
+    category: "BLUE • MASSAGE",
+    title: "Back Rub",
+    description: "Offer a relaxing back or upper-arm massage for 30 seconds."
+  },
+  {
+    color: "blue",
+    symbol: "🤗",
+    category: "BLUE • CLOSENESS",
+    title: "The Long Hug",
+    description: "Enjoy a comfortable, uninterrupted 20-second hug."
+  },
+  {
+    color: "blue",
+    symbol: "🪶",
+    category: "BLUE • TOUCH",
+    title: "Gentle Tracing",
+    description: "Trace a heart on your partner's hand or arm with one finger."
+  },
+  {
+    color: "blue",
+    symbol: "💗",
+    category: "BLUE • MASSAGE",
+    title: "Your Choice Massage",
+    description: "Ask your partner where they would like a gentle massage."
+  },
+
+  {
+    color: "green",
+    symbol: "🙈",
+    category: "GREEN • SENSORY PLAY",
+    title: "Guess the Touch",
+    description: "Close your eyes while your partner gently touches your hand. Guess which finger they used."
+  },
+  {
+    color: "green",
+    symbol: "🎵",
+    category: "GREEN • SENSORY PLAY",
+    title: "The Love Song",
+    description: "Play a favourite romantic song and sway together for 30 seconds."
+  },
+  {
+    color: "green",
+    symbol: "🌸",
+    category: "GREEN • SENSORY PLAY",
+    title: "A Little Surprise",
+    description: "Let your partner choose a gentle, comfortable touch on your hand or arm."
+  },
+  {
+    color: "green",
+    symbol: "👀",
+    category: "GREEN • CONNECTION",
+    title: "Eye Contact",
+    description: "Look into each other's eyes for 15 seconds, then share a smile."
+  },
+  {
+    color: "green",
+    symbol: "💭",
+    category: "GREEN • FANTASY",
+    title: "Dream Date",
+    description: "Describe your ideal romantic evening together in three sentences."
+  },
+  {
+    color: "green",
+    symbol: "🌹",
+    category: "GREEN • SENSORY PLAY",
+    title: "Choose a Sense",
+    description: "Choose a comfortable sensory activity together: music, a soft fabric, or a favourite fragrance."
+  },
+
+  {
+    color: "yellow",
+    symbol: "😉",
+    category: "YELLOW • PLAYFUL",
+    title: "The Flirty Compliment",
+    description: "Give your partner a compliment that makes them blush."
+  },
+  {
+    color: "yellow",
+    symbol: "💃",
+    category: "YELLOW • PLAYFUL",
+    title: "Private Dance",
+    description: "Dance together for 20 seconds. No choreography required!"
+  },
+  {
+    color: "yellow",
+    symbol: "🤫",
+    category: "YELLOW • SECRETS",
+    title: "Whisper a Secret",
+    description: "Share a sweet memory or a romantic wish with your partner."
+  },
+  {
+    color: "yellow",
+    symbol: "🎭",
+    category: "YELLOW • ACTING",
+    title: "First-Date Replay",
+    description: "Pretend you are meeting for the first time. One person must flirt!"
+  },
+  {
+    color: "yellow",
+    symbol: "❤️",
+    category: "YELLOW • CONNECTION",
+    title: "Two Truths",
+    description: "Share two things you love about your relationship."
+  },
+  {
+    color: "yellow",
+    symbol: "🎁",
+    category: "YELLOW • SURPRISE",
+    title: "Your Partner's Choice",
+    description: "Let your partner choose one affectionate activity from this deck."
+  },
+
+  {
+    color: "special",
+    symbol: "🃏",
+    category: "WILD • YOUR CHOICE",
+    title: "Make the Rules",
+    description: "Suggest a romantic activity. Your partner gets to accept, modify, or choose another."
+  },
+  {
+    color: "special",
+    symbol: "🔄",
+    category: "REVERSE • SWITCH",
+    title: "Switch Roles",
+    description: "If you both agree, switch who gives and receives the next massage or affectionate gesture."
+  },
+  {
+    color: "special",
+    symbol: "⏭️",
+    category: "SKIP • YOUR CHOICE",
+    title: "Free Pass",
+    description: "You can pass this activity without penalty, or choose a different one together."
+  },
+  {
+    color: "special",
+    symbol: "💖",
+    category: "WILD • ROMANCE",
+    title: "The Sweet Request",
+    description: "Each partner suggests one affectionate activity. Choose one you both want."
+  },
+  {
+    color: "special",
+    symbol: "🔥",
+    category: "WILD • FLIRTY",
+    title: "Turn Up the Romance",
+    description: "Ask your partner whether they want a kiss, a massage, or a playful challenge."
+  },
+  {
+    color: "special",
+    symbol: "💞",
+    category: "WILD • CONNECTION",
+    title: "The Grand Gesture",
+    description: "Give your partner a hug and tell them one thing that makes them special to you."
+  }
+];
+
+let deck = [];
+let currentActivity = null;
+let completed = 0;
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function makeDeck() {
+  deck = shuffle([...activities]);
+  completed = 0;
+}
+
+function revealActivity() {
+  if (deck.length === 0) {
+    makeDeck();
+    document.getElementById("counter").textContent =
+      "New round! All activities shuffled again.";
+  }
+
+  // Avoid immediately repeating the previous activity.
+  if (
+    deck.length > 1 &&
+    currentActivity &&
+    deck[deck.length - 1] === currentActivity
+  ) {
+    [deck[0], deck[deck.length - 1]] =
+      [deck[deck.length - 1], deck[0]];
+  }
+
+  currentActivity = deck.pop();
+  completed++;
+
+  const card = document.getElementById("activityCard");
+  card.className = "card " + currentActivity.color;
+
+  document.getElementById("symbol").textContent =
+    currentActivity.symbol;
+
+  document.getElementById("category").textContent =
+    currentActivity.category;
+
+  document.getElementById("activity").textContent =
+    currentActivity.title;
+
+  document.getElementById("description").textContent =
+    currentActivity.description;
+
+  document.getElementById("counter").textContent =
+    `${completed} revealed • ${deck.length} activities remaining`;
+
+  document.getElementById("revealBtn").textContent =
+    "✨ Reveal Next Activity";
+}
+
+function repeatActivity() {
+  if (!currentActivity) {
+    revealActivity();
+    return;
+  }
+
+  document.getElementById("counter").textContent =
+    "Same activity selected again ❤️";
+}
+
+function skipActivity() {
+  if (!currentActivity) {
+    revealActivity();
+    return;
+  }
+
+  revealActivity();
+}
+
+makeDeck();
+</script>
+</body>
+</html>
