@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>After Dark UNO</title>
+
+<style>
+:root {
+  --bg: #10080e;
+  --panel: #21121d;
+  --pink: #ff3f83;
+  --purple: #8b4dff;
+  --text: #fff4fa;
+  --muted: #c5aaba;
+  --border: #503044;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #42142f 0%, #180d18 45%, #090609 100%);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.app {
+  width: 100%;
+  max-width: 700px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  font-size: clamp(30px, 7vw, 48px);
+  margin: 10px 0;
+  color: #ff6a9e;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px #ff267755;
+}
+
+header p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.panel {
+  background: #21121ddd;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 12px 35px #0005;
+}
+
+.setup {
+  display: grid;
+  gap: 14px;
+}
+
+label {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #120a11;
+  color: var(--text);
+  font-size: 16px;
+}
+
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 13px 18px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .15s, opacity .15s;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: white;
+}
+
+.secondary {
+  background: #382334;
+  border: 1px solid #654258;
+  color: white;
+}
+
+.danger {
+  background: #4a1728;
+  color: #ffb6cf;
+  border: 1px solid #8e3655;
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.card {
+  min-height: 290px;
+  border-radius: 22px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border: 2px solid #ffffff55;
+  box-shadow: 0 12px 35px #0007;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  border: 2px solid #ffffff25;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.card-category {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  opacity: .9;
+}
+
+.card-title {
+  font-size: clamp(25px, 6vw, 36px);
+  font-weight: 900;
+  margin: 24px 0;
+}
+
+.card-prompt {
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.card-time {
+  margin-top: 22px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.pink {
+  background: linear-gradient(145deg, #b91f5c, #5b153d);
+}
+
+.purple {
+  background: linear-gradient(145deg, #7837c9, #32135f);
+}
+
+.red {
+  background: linear-gradient(145deg, #c02c36, #5b111e);
+}
+
+.blue {
+  background: linear-gradient(145deg, #3157bc, #17295d);
+}
+
+.green {
+  background: linear-gradient(145deg, #248b72, #10483e);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.actions button {
+  min-height: 48px;
+}
+
+.timer {
+  font-size: 42px;
+  font-weight: bold;
+  text-align: center;
+  margin: 14px 0;
+  color: #ff76a8;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.timer-controls button {
+  min-width: 100px;
+}
+
+.notice {
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 16px;
+}
+
+.current-player {
+  color: #ff8bb4;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  color: #9e8192;
+  font-size: 12px;
+  margin: 24px 0 10px;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .card {
+    min-height: 310px;
+    padding: 20px 15px;
+  }
+
+  .card-prompt {
+    font-size: 17px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <h1>AFTER DARK UNO</h1>
+  <p>A private game for two 💋</p>
+</header>
+
+<section class="panel setup" id="setupPanel">
+
+  <div>
+    <label for="playerOne">Player One</label>
+    <input id="playerOne" value="Partner 1" maxlength="20">
+  </div>
+
+  <div>
+    <label for="playerTwo">Player Two</label>
+    <input id="playerTwo" value="Partner 2" maxlength="20">
+  </div>
+
+  <div>
+    <label for="intensity">Game Intensity</label>
+    <select id="intensity">
+      <option value="warm">Warm-up</option>
+      <option value="hot" selected>Hot</option>
+      <option value="afterdark">After Dark</option>
+    </select>
+  </div>
+
+  <button class="primary" onclick="startGame()">Start Game</button>
+
+  <p class="notice">
+    For consenting adults. Every prompt is optional.
+    Either player can pass or stop at any time.
+  </p>
+</section>
+
+<section class="panel hidden" id="gamePanel">
+
+  <div class="game-info">
+    <span>Turn: <span class="current-player" id="turnName"></span></span>
+    <span>Cards played: <span id="playedCount">0</span></span>
+  </div>
+
+  <div class="card pink" id="gameCard">
+    <div class="card-content">
+      <div class="card-category" id="cardCategory">AFTER DARK</div>
+      <div class="card-title" id="cardTitle">Ready?</div>
+      <div class="card-prompt" id="cardPrompt">
+        Draw a card to begin.
+      </div>
+      <div class="card-time" id="cardTime"></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" id="drawButton" onclick="drawCard()">
+      Draw Card
+    </button>
+
+    <button class="secondary" id="doneButton" onclick="completeTurn()" disabled>
+      Done
+    </button>
+
+    <button class="secondary" id="passButton" onclick="passTurn()" disabled>
+      Pass
+    </button>
+
+    <button class="danger" onclick="endGame()">
+      End Game
+    </button>
+  </div>
+
+  <div class="notice">
+    The player whose turn it is may draw a prompt, complete it, or pass.
+  </div>
+</section>
+
+<section class="panel hidden" id="timerPanel">
+  <h3 style="text-align:center;margin-top:0;">Challenge Timer</h3>
+
+  <div class="timer" id="timerDisplay">00:00</div>
+
+  <div class="timer-controls">
+    <button class="secondary" onclick="startTimer()">Start</button>
+    <button class="secondary" onclick="pauseTimer()">Pause</button>
+    <button class="secondary" onclick="resetTimer()">Reset</button>
+  </div>
+</section>
+
+<footer>
+  AFTER DARK UNO · Private couple game
+</footer>
+
+</div>
+
+<script>
+/*
+=========================================================
+EDITABLE PROMPTS
+Change, add, or remove prompts from these arrays.
+The game randomly selects prompts from the chosen level.
+=========================================================
+*/
+
+const PROMPTS = {
+
+  warm: {
+    clothing: [
+      "Remove one item of clothing, if you both agree.",
+      "Let your partner choose one item of clothing for you to remove.",
+      "Remove an accessory or clothing item of your choice.",
+      "Give your partner a playful kiss before removing one item.",
+      "Let your partner decide whether you remove an item or pass."
+    ],
+
+    kissing: [
+      "Share a slow kiss for 10 seconds.",
+      "Kiss your partner for 20 seconds.",
+      "Give your partner three gentle kisses.",
+      "Share a passionate kiss for 30 seconds.",
+      "Let your partner choose the kind of kiss."
+    ],
+
+    sensual: [
+      "Give your partner a slow, sensual kiss on a mutually chosen area.",
+      "Hold your partner close for 20 seconds.",
+      "Share a lingering kiss for 30 seconds.",
+      "Give your partner a gentle kiss and let them choose what happens next."
+    ]
+  },
+
+  hot: {
+    clothing: [
+      "Remove one item of clothing and let your partner choose the next prompt.",
+      "Remove an item of clothing slowly, if you both agree.",
+      "Let your partner choose one clothing item for you to remove.",
+      "Remove one item, then share a 20-second kiss.",
+      "Choose an item of clothing to remove together."
+    ],
+
+    kissing: [
+      "Share a deep kiss for 30 seconds.",
+      "Kiss your partner for 1 minute.",
+      "Share a series of slow kisses for 30 seconds.",
+      "Let your partner guide the pace of a 20-second kiss.",
+      "Share a passionate kiss for 1 minute."
+    ],
+
+    sensual: [
+      "Give your partner a slow, sensual kiss on a mutually chosen area for 20 seconds.",
+      "Share a close embrace and kiss for 1 minute.",
+      "Give your partner a lingering kiss and let them choose the next prompt.",
+      "Take turns giving gentle kisses for 30 seconds.",
+      "Let your partner choose a comfortable area for a sensual kiss."
+    ]
+  },
+
+  afterdark: {
+    clothing: [
+      "Remove one item of clothing, if you both want to continue.",
+      "Let your partner choose an item of clothing for you to remove.",
+      "Remove an item, then draw another card.",
+      "Choose an item to remove and let your partner choose the next challenge.",
+      "Remove one item and share a 1-minute kiss."
+    ],
+
+    kissing: [
+      "Share a passionate kiss for 1 minute.",
+      "Kiss your partner for 2 minutes.",
+      "Share slow, lingering kisses for 1 minute.",
+      "Let your partner choose the pace of a 30-second kiss.",
+      "Share a kiss for 2 minutes, pausing whenever either partner wants."
+    ],
+
+    sensual: [
+      "Give your partner a slow, sensual kiss on a mutually chosen area for 30 seconds.",
+      "Share a close embrace and kiss for 2 minutes.",
+      "Give your partner a lingering kiss for 1 minute.",
+      "Take turns giving gentle kisses for 30 seconds each.",
+      "Let your partner choose a comfortable area for a sensual kiss."
+    ]
+  }
+};
+
+/*
+=========================================================
+GAME SETTINGS
+=========================================================
+*/
+
+const DURATIONS = [
+  10,
+  20,
+  30,
+  60,
+  120,
+  300
+];
+
+const DURATION_LABELS = {
+  10: "10 seconds",
+  20: "20 seconds",
+  30: "30 seconds",
+  60: "1 minute",
+  120: "2 minutes",
+  300: "5 minutes"
+};
+
+const COLORS = {
+  clothing: "pink",
+  kissing: "purple",
+  sensual: "red"
+};
+
+const CATEGORY_LABELS = {
+  clothing: "Clothing Removal",
+  kissing: "Kissing Challenge",
+  sensual: "Sensual Challenge"
+};
+
+let players = [];
+let currentPlayer = 0;
+let played = 0;
+let currentPrompt = null;
+let gameStarted = false;
+
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+
+/*
+=========================================================
+START GAME
+=========================================================
+*/
+
+function startGame() {
+  const p1 = document.getElementById("playerOne").value.trim() || "Partner 1";
+  const p2 = document.getElementById("playerTwo").value.trim() || "Partner 2";
+
+  players = [p1, p2];
+  currentPlayer = 0;
+  played = 0;
+  currentPrompt = null;
+  gameStarted = true;
+
+  document.getElementById("setupPanel").classList.add("hidden");
+  document.getElementById("gamePanel").classList.remove("hidden");
+  document.getElementById("timerPanel").classList.remove("hidden");
+
+  updateTurn();
+  resetCard();
+}
+
+/*
+=========================================================
+DRAW PROMPT
+=========================================================
+*/
+
+function drawCard() {
+  if (!gameStarted || currentPrompt) return;
+
+  const intensity = document.getElementById("intensity").value;
+  const pool = PROMPTS[intensity];
+
+  const categories = Object.keys(pool);
+  const category = categories[Math.floor(Math.random() * categories.length)];
+
+  const prompts = pool[category];
+  const prompt = prompts[Math.floor(Math.random() * prompts.length)];
+
+  const duration = DURATIONS[Math.floor(Math.random() * DURATIONS.length)];
+
+  currentPrompt = {
+    category,
+    prompt,
+    duration
+  };
+
+  showCard(currentPrompt);
+
+  document.getElementById("drawButton").disabled = true;
+  document.getElementById("doneButton").disabled = false;
+  document.getElementById("passButton").disabled = false;
+}
+
+/*
+=========================================================
+DISPLAY CARD
+=========================================================
+*/
+
+function showCard(card) {
+  const cardElement = document.getElementById("gameCard");
+
+  cardElement.className = "card " + COLORS[card.category];
+
+  document.getElementById("cardCategory").textContent =
+    CATEGORY_LABELS[card.category];
+
+  document.getElementById("cardTitle").textContent =
+    "Your Challenge";
+
+  document.getElementById("cardPrompt").textContent =
+    card.prompt;
+
+  document.getElementById("cardTime").textContent =
+    "Suggested time: " + DURATION_LABELS[card.duration];
+}
+
+/*
+=========================================================
+COMPLETE OR PASS
+=========================================================
+*/
+
+function completeTurn() {
+  if (!currentPrompt) return;
+
+  played++;
+  nextTurn();
+}
+
+function passTurn() {
+  if (!currentPrompt) return;
+
+  nextTurn();
+}
+
+function nextTurn() {
+  currentPrompt = null;
+
+  currentPlayer = (currentPlayer + 1) % players.length;
+
+  document.getElementById("playedCount").textContent = played;
+
+  updateTurn();
+  resetCard();
+}
+
+function updateTurn() {
+  document.getElementById("turnName").textContent =
+    players[currentPlayer];
+}
+
+function resetCard() {
+  const cardElement = document.getElementById("gameCard");
+
+  cardElement.className = "card pink";
+
+  document.getElementById("cardCategory").textContent =
+    "AFTER DARK UNO";
+
+  document.getElementById("cardTitle").textContent =
+    "Draw a Card";
+
+  document.getElementById("cardPrompt").textContent =
+    players[currentPlayer] + ", draw a card to reveal your challenge.";
+
+  document.getElementById("cardTime").textContent = "";
+
+  document.getElementById("drawButton").disabled = false;
+  document.getElementById("doneButton").disabled = true;
+  document.getElementById("passButton").disabled = true;
+}
+
+/*
+=========================================================
+TIMER
+=========================================================
+*/
+
+function startTimer() {
+  if (timerRunning) return;
+
+  if (timerSeconds <= 0) {
+    timerSeconds = currentPrompt
+      ? currentPrompt.duration
+      : 30;
+  }
+
+  timerRunning = true;
+  updateTimerDisplay();
+
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+
+    updateTimerDisplay();
+
+    if (timerSeconds <= 0) {
+      pauseTimer();
+      document.getElementById("timerDisplay").textContent = "Time!";
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function resetTimer() {
+  pauseTimer();
+
+  timerSeconds = currentPrompt
+    ? currentPrompt.duration
+    : 30;
+
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+
+  document.getElementById("timerDisplay").textContent =
+    String(minutes).padStart(2, "0") + ":" +
+    String(seconds).padStart(2, "0");
+}
+
+/*
+=========================================================
+END GAME
+=========================================================
+*/
+
+function endGame() {
+  pauseTimer();
+
+  gameStarted = false;
+  currentPrompt = null;
+
+  document.getElementById("gamePanel").classList.add("hidden");
+  document.getElementById("timerPanel").classList.add("hidden");
+  document.getElementById("setupPanel").classList.remove("hidden");
+
+  document.getElementById("playedCount").textContent = "0";
+  document.getElementById("timerDisplay").textContent = "00:00";
+}
+
+</script>
+</body>
+</html>
