@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -293,6 +294,8 @@ footer {
   <p>A private game for two 💋</p>
 </header>
 
+<!-- ================= SETUP ================= -->
+
 <section class="panel setup" id="setupPanel">
 
   <div>
@@ -307,6 +310,7 @@ footer {
 
   <div>
     <label for="intensity">Game Intensity</label>
+
     <select id="intensity">
       <option value="warm">Warm-up</option>
       <option value="hot" selected>Hot</option>
@@ -314,65 +318,121 @@ footer {
     </select>
   </div>
 
-  <button class="primary" onclick="startGame()">Start Game</button>
+  <button class="primary" onclick="startGame()">
+    Start Game
+  </button>
 
   <p class="notice">
     For consenting adults. Every prompt is optional.
     Either player can pass or stop at any time.
   </p>
+
 </section>
+
+<!-- ================= GAME ================= -->
 
 <section class="panel hidden" id="gamePanel">
 
   <div class="game-info">
-    <span>Turn: <span class="current-player" id="turnName"></span></span>
-    <span>Cards played: <span id="playedCount">0</span></span>
+
+    <span>
+      Turn:
+      <span class="current-player" id="turnName"></span>
+    </span>
+
+    <span>
+      Cards played:
+      <span id="playedCount">0</span>
+    </span>
+
   </div>
 
   <div class="card pink" id="gameCard">
+
     <div class="card-content">
-      <div class="card-category" id="cardCategory">AFTER DARK</div>
-      <div class="card-title" id="cardTitle">Ready?</div>
+
+      <div class="card-category" id="cardCategory">
+        AFTER DARK
+      </div>
+
+      <div class="card-title" id="cardTitle">
+        Ready?
+      </div>
+
       <div class="card-prompt" id="cardPrompt">
         Draw a card to begin.
       </div>
+
       <div class="card-time" id="cardTime"></div>
+
     </div>
+
   </div>
 
   <div class="actions">
-    <button class="primary" id="drawButton" onclick="drawCard()">
+
+    <button class="primary"
+            id="drawButton"
+            onclick="drawCard()">
       Draw Card
     </button>
 
-    <button class="secondary" id="doneButton" onclick="completeTurn()" disabled>
+    <button class="secondary"
+            id="doneButton"
+            onclick="completeTurn()"
+            disabled>
       Done
     </button>
 
-    <button class="secondary" id="passButton" onclick="passTurn()" disabled>
+    <button class="secondary"
+            id="passButton"
+            onclick="passTurn()"
+            disabled>
       Pass
     </button>
 
-    <button class="danger" onclick="endGame()">
+    <button class="danger"
+            onclick="endGame()">
       End Game
     </button>
+
   </div>
 
   <div class="notice">
-    The player whose turn it is may draw a prompt, complete it, or pass.
+    Draw a prompt, complete it, or pass.
+    Either player may stop at any time.
   </div>
+
 </section>
 
-<section class="panel hidden" id="timerPanel">
-  <h3 style="text-align:center;margin-top:0;">Challenge Timer</h3>
+<!-- ================= TIMER ================= -->
 
-  <div class="timer" id="timerDisplay">00:00</div>
+<section class="panel hidden" id="timerPanel">
+
+  <h3 style="text-align:center;margin-top:0;">
+    Challenge Timer
+  </h3>
+
+  <div class="timer" id="timerDisplay">
+    00:00
+  </div>
 
   <div class="timer-controls">
-    <button class="secondary" onclick="startTimer()">Start</button>
-    <button class="secondary" onclick="pauseTimer()">Pause</button>
-    <button class="secondary" onclick="resetTimer()">Reset</button>
+
+    <button class="secondary" onclick="startTimer()">
+      Start
+    </button>
+
+    <button class="secondary" onclick="pauseTimer()">
+      Pause
+    </button>
+
+    <button class="secondary" onclick="resetTimer()">
+      Reset
+    </button>
+
   </div>
+
 </section>
 
 <footer>
@@ -382,74 +442,116 @@ footer {
 </div>
 
 <script>
+
 /*
 =========================================================
-EDITABLE PROMPTS
-Change, add, or remove prompts from these arrays.
-The game randomly selects prompts from the chosen level.
+EDITABLE GAME COMMANDS
+
+Replace the placeholder commands with your own.
+
+To add a command:
+  "Your new command here",
+
+To remove a command:
+  Delete the complete line.
+
+Keep each command inside quotation marks.
 =========================================================
 */
 
 const PROMPTS = {
 
+  // ================= WARM-UP =================
+
   warm: {
+
     clothing: [
       "Remove one item of clothing, if you both agree.",
-      "Let your partner choose one item of clothing for you to remove.",
+      "Let your partner choose one item of clothing for you.",
       "Remove an accessory or clothing item of your choice.",
       "Give your partner a playful kiss before removing one item.",
-      "Let your partner decide whether you remove an item or pass."
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ],
 
     kissing: [
       "Share a slow kiss for 10 seconds.",
       "Kiss your partner for 20 seconds.",
       "Give your partner three gentle kisses.",
-      "Share a passionate kiss for 30 seconds.",
-      "Let your partner choose the kind of kiss."
+      "Share a kiss for 30 seconds.",
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ],
 
     sensual: [
-      "Give your partner a slow, sensual kiss on a mutually chosen area.",
       "Hold your partner close for 20 seconds.",
       "Share a lingering kiss for 30 seconds.",
-      "Give your partner a gentle kiss and let them choose what happens next."
+      "Give your partner a gentle kiss.",
+      "Let your partner choose the next romantic challenge.",
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ]
+
   },
 
+  // ================= HOT =================
+
   hot: {
+
     clothing: [
-      "Remove one item of clothing and let your partner choose the next prompt.",
-      "Remove an item of clothing slowly, if you both agree.",
-      "Let your partner choose one clothing item for you to remove.",
-      "Remove one item, then share a 20-second kiss.",
-      "Choose an item of clothing to remove together."
+      "Remove one item of clothing, if you both agree.",
+      "Let your partner choose an item of clothing.",
+      "Remove an item and share a 20-second kiss.",
+      "Choose an item of clothing to remove together.",
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ],
 
     kissing: [
       "Share a deep kiss for 30 seconds.",
       "Kiss your partner for 1 minute.",
-      "Share a series of slow kisses for 30 seconds.",
+      "Share slow kisses for 30 seconds.",
       "Let your partner guide the pace of a 20-second kiss.",
-      "Share a passionate kiss for 1 minute."
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ],
 
     sensual: [
-      "Give your partner a slow, sensual kiss on a mutually chosen area for 20 seconds.",
       "Share a close embrace and kiss for 1 minute.",
-      "Give your partner a lingering kiss and let them choose the next prompt.",
       "Take turns giving gentle kisses for 30 seconds.",
-      "Let your partner choose a comfortable area for a sensual kiss."
+      "Give your partner a lingering kiss.",
+      "Let your partner choose a comfortable area for a kiss.",
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ]
+
   },
 
+  // ================= AFTER DARK =================
+
   afterdark: {
+
     clothing: [
       "Remove one item of clothing, if you both want to continue.",
-      "Let your partner choose an item of clothing for you to remove.",
-      "Remove an item, then draw another card.",
-      "Choose an item to remove and let your partner choose the next challenge.",
-      "Remove one item and share a 1-minute kiss."
+      "Let your partner choose an item of clothing.",
+      "Remove an item and draw another card.",
+      "Choose an item to remove together.",
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ],
 
     kissing: [
@@ -457,18 +559,27 @@ const PROMPTS = {
       "Kiss your partner for 2 minutes.",
       "Share slow, lingering kisses for 1 minute.",
       "Let your partner choose the pace of a 30-second kiss.",
-      "Share a kiss for 2 minutes, pausing whenever either partner wants."
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "CUSTOM COMMAND 1 - REPLACE THIS",
+      "CUSTOM COMMAND 2 - REPLACE THIS"
     ],
 
     sensual: [
-      "Give your partner a slow, sensual kiss on a mutually chosen area for 30 seconds.",
       "Share a close embrace and kiss for 2 minutes.",
       "Give your partner a lingering kiss for 1 minute.",
-      "Take turns giving gentle kisses for 30 seconds each.",
-      "Let your partner choose a comfortable area for a sensual kiss."
+      "Take turns giving gentle kisses for 30 seconds.",
+      "Let your partner choose a comfortable area for a kiss.",
+
+      // REPLACE OR ADD YOUR OWN COMMANDS BELOW
+      "Give your partner PEACH lick for 20 Seconds",
+      "Kiss your partner MELONS for 1 minutes"
     ]
+
   }
+
 };
+
 
 /*
 =========================================================
@@ -506,6 +617,13 @@ const CATEGORY_LABELS = {
   sensual: "Sensual Challenge"
 };
 
+
+/*
+=========================================================
+GAME STATE
+=========================================================
+*/
+
 let players = [];
 let currentPlayer = 0;
 let played = 0;
@@ -516,6 +634,7 @@ let timerInterval = null;
 let timerSeconds = 0;
 let timerRunning = false;
 
+
 /*
 =========================================================
 START GAME
@@ -523,42 +642,73 @@ START GAME
 */
 
 function startGame() {
-  const p1 = document.getElementById("playerOne").value.trim() || "Partner 1";
-  const p2 = document.getElementById("playerTwo").value.trim() || "Partner 2";
+
+  const p1 =
+    document.getElementById("playerOne").value.trim()
+    || "Partner 1";
+
+  const p2 =
+    document.getElementById("playerTwo").value.trim()
+    || "Partner 2";
 
   players = [p1, p2];
+
   currentPlayer = 0;
   played = 0;
   currentPrompt = null;
   gameStarted = true;
 
-  document.getElementById("setupPanel").classList.add("hidden");
-  document.getElementById("gamePanel").classList.remove("hidden");
-  document.getElementById("timerPanel").classList.remove("hidden");
+  pauseTimer();
+
+  timerSeconds = 30;
+  updateTimerDisplay();
+
+  document.getElementById("playedCount").textContent = "0";
+
+  document.getElementById("setupPanel")
+    .classList.add("hidden");
+
+  document.getElementById("gamePanel")
+    .classList.remove("hidden");
+
+  document.getElementById("timerPanel")
+    .classList.remove("hidden");
 
   updateTurn();
   resetCard();
+
 }
+
 
 /*
 =========================================================
-DRAW PROMPT
+DRAW CARD
 =========================================================
 */
 
 function drawCard() {
-  if (!gameStarted || currentPrompt) return;
 
-  const intensity = document.getElementById("intensity").value;
+  if (!gameStarted || currentPrompt) {
+    return;
+  }
+
+  const intensity =
+    document.getElementById("intensity").value;
+
   const pool = PROMPTS[intensity];
 
   const categories = Object.keys(pool);
-  const category = categories[Math.floor(Math.random() * categories.length)];
+
+  const category =
+    categories[Math.floor(Math.random() * categories.length)];
 
   const prompts = pool[category];
-  const prompt = prompts[Math.floor(Math.random() * prompts.length)];
 
-  const duration = DURATIONS[Math.floor(Math.random() * DURATIONS.length)];
+  const prompt =
+    prompts[Math.floor(Math.random() * prompts.length)];
+
+  const duration =
+    DURATIONS[Math.floor(Math.random() * DURATIONS.length)];
 
   currentPrompt = {
     category,
@@ -571,7 +721,9 @@ function drawCard() {
   document.getElementById("drawButton").disabled = true;
   document.getElementById("doneButton").disabled = false;
   document.getElementById("passButton").disabled = false;
+
 }
+
 
 /*
 =========================================================
@@ -580,9 +732,12 @@ DISPLAY CARD
 */
 
 function showCard(card) {
-  const cardElement = document.getElementById("gameCard");
 
-  cardElement.className = "card " + COLORS[card.category];
+  const cardElement =
+    document.getElementById("gameCard");
+
+  cardElement.className =
+    "card " + COLORS[card.category];
 
   document.getElementById("cardCategory").textContent =
     CATEGORY_LABELS[card.category];
@@ -595,7 +750,9 @@ function showCard(card) {
 
   document.getElementById("cardTime").textContent =
     "Suggested time: " + DURATION_LABELS[card.duration];
+
 }
+
 
 /*
 =========================================================
@@ -604,36 +761,85 @@ COMPLETE OR PASS
 */
 
 function completeTurn() {
-  if (!currentPrompt) return;
+
+  if (!currentPrompt) {
+    return;
+  }
 
   played++;
+
   nextTurn();
+
 }
+
 
 function passTurn() {
-  if (!currentPrompt) return;
+
+  if (!currentPrompt) {
+    return;
+  }
 
   nextTurn();
+
 }
 
+
+/*
+=========================================================
+NEXT TURN
+=========================================================
+*/
+
 function nextTurn() {
+
+  // Stop the timer when the current turn ends.
+  pauseTimer();
+
+  // Clear the current prompt.
   currentPrompt = null;
 
-  currentPlayer = (currentPlayer + 1) % players.length;
+  // Reset timer for the next player.
+  timerSeconds = 30;
+  updateTimerDisplay();
 
-  document.getElementById("playedCount").textContent = played;
+  // Switch players.
+  currentPlayer =
+    (currentPlayer + 1) % players.length;
+
+  // Update the counter.
+  document.getElementById("playedCount").textContent =
+    played;
 
   updateTurn();
   resetCard();
+
 }
+
+
+/*
+=========================================================
+UPDATE PLAYER
+=========================================================
+*/
 
 function updateTurn() {
+
   document.getElementById("turnName").textContent =
     players[currentPlayer];
+
 }
 
+
+/*
+=========================================================
+RESET CARD
+=========================================================
+*/
+
 function resetCard() {
-  const cardElement = document.getElementById("gameCard");
+
+  const cardElement =
+    document.getElementById("gameCard");
 
   cardElement.className = "card pink";
 
@@ -644,14 +850,17 @@ function resetCard() {
     "Draw a Card";
 
   document.getElementById("cardPrompt").textContent =
-    players[currentPlayer] + ", draw a card to reveal your challenge.";
+    players[currentPlayer] +
+    ", draw a card to reveal your challenge.";
 
   document.getElementById("cardTime").textContent = "";
 
   document.getElementById("drawButton").disabled = false;
   document.getElementById("doneButton").disabled = true;
   document.getElementById("passButton").disabled = true;
+
 }
+
 
 /*
 =========================================================
@@ -660,36 +869,56 @@ TIMER
 */
 
 function startTimer() {
-  if (timerRunning) return;
+
+  if (!gameStarted || timerRunning) {
+    return;
+  }
 
   if (timerSeconds <= 0) {
+
     timerSeconds = currentPrompt
       ? currentPrompt.duration
       : 30;
+
   }
 
   timerRunning = true;
+
   updateTimerDisplay();
 
   timerInterval = setInterval(() => {
+
     timerSeconds--;
 
     updateTimerDisplay();
 
     if (timerSeconds <= 0) {
+
       pauseTimer();
-      document.getElementById("timerDisplay").textContent = "Time!";
+
+      document.getElementById("timerDisplay")
+        .textContent = "Time!";
+
     }
+
   }, 1000);
+
 }
+
 
 function pauseTimer() {
+
   timerRunning = false;
+
   clearInterval(timerInterval);
+
   timerInterval = null;
+
 }
 
+
 function resetTimer() {
+
   pauseTimer();
 
   timerSeconds = currentPrompt
@@ -697,16 +926,26 @@ function resetTimer() {
     : 30;
 
   updateTimerDisplay();
+
 }
+
 
 function updateTimerDisplay() {
-  const minutes = Math.floor(timerSeconds / 60);
-  const seconds = timerSeconds % 60;
+
+  const minutes =
+    Math.floor(timerSeconds / 60);
+
+  const seconds =
+    timerSeconds % 60;
 
   document.getElementById("timerDisplay").textContent =
+
     String(minutes).padStart(2, "0") + ":" +
+
     String(seconds).padStart(2, "0");
+
 }
+
 
 /*
 =========================================================
@@ -715,19 +954,39 @@ END GAME
 */
 
 function endGame() {
+
   pauseTimer();
 
   gameStarted = false;
   currentPrompt = null;
 
-  document.getElementById("gamePanel").classList.add("hidden");
-  document.getElementById("timerPanel").classList.add("hidden");
-  document.getElementById("setupPanel").classList.remove("hidden");
+  currentPlayer = 0;
+  played = 0;
 
-  document.getElementById("playedCount").textContent = "0";
-  document.getElementById("timerDisplay").textContent = "00:00";
+  timerSeconds = 0;
+
+  document.getElementById("gamePanel")
+    .classList.add("hidden");
+
+  document.getElementById("timerPanel")
+    .classList.add("hidden");
+
+  document.getElementById("setupPanel")
+    .classList.remove("hidden");
+
+  document.getElementById("playedCount").textContent =
+    "0";
+
+  document.getElementById("timerDisplay").textContent =
+    "00:00";
+
+  document.getElementById("drawButton").disabled = false;
+  document.getElementById("doneButton").disabled = true;
+  document.getElementById("passButton").disabled = true;
+
 }
 
 </script>
+
 </body>
 </html>
