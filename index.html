@@ -4,578 +4,1118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spice Up UNO ❤️</title>
+<meta name="theme-color" content="#160910">
+<title>Intimate UNO | After Dark</title>
 
 <style>
 :root {
-  --bg: #160b19;
-  --card: #29152d;
-  --pink: #ff4f87;
-  --gold: #ffd58a;
-  --text: #fff4f7;
-  --muted: #d7bdcf;
+    --pink: #ff477e;
+    --rose: #c94b70;
+    --gold: #d8b477;
+    --dark: #10090d;
+    --panel: #21121b;
+    --red: #e53950;
+    --blue: #2878d0;
+    --yellow: #e6b72f;
+    --green: #299c69;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  padding: 24px 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background:
-    radial-gradient(ellipse at top, #532044 0%, transparent 55%),
-    var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: "Segoe UI", sans-serif;
+    color: #fff;
+    background:
+        radial-gradient(ellipse at top, #421629 0%, transparent 55%),
+        linear-gradient(135deg, #10090d, #1d0c16);
 }
 
-.app {
-  width: 100%;
-  max-width: 490px;
-  text-align: center;
-}
-
-.heart {
-  font-size: 42px;
-  margin-bottom: 5px;
+header {
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 h1 {
-  margin: 0;
-  font-size: clamp(29px, 8vw, 43px);
-  letter-spacing: 1px;
+    margin: 0;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    letter-spacing: 3px;
+    color: var(--pink);
+    text-shadow: 0 0 25px #ff477e66;
 }
 
 .subtitle {
-  color: var(--muted);
-  margin: 10px 0 24px;
-  line-height: 1.6;
+    color: #c9a9b6;
+    font-style: italic;
+    margin-top: 8px;
 }
 
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 9px;
-  margin-bottom: 22px;
+#game-container {
+    max-width: 950px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ffffff15;
+    border-radius: 24px;
+    background: #ffffff08;
+    box-shadow: 0 20px 60px #0008;
+    backdrop-filter: blur(12px);
 }
 
-.pill {
-  border: 1px solid #68405d;
-  padding: 8px 12px;
-  border-radius: 25px;
-  font-size: 12px;
-  color: #f9dbe9;
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #0004;
+    border-radius: 12px;
+    border-left: 4px solid var(--pink);
 }
 
-.deck {
-  background: linear-gradient(145deg, #38203d, #201324);
-  border: 1px solid #78415f;
-  border-radius: 25px;
-  padding: 20px;
-  box-shadow: 0 18px 55px #0007;
+.current-turn {
+    color: var(--pink);
+    font-weight: bold;
+}
+
+.level {
+    color: var(--gold);
+}
+
+.command-box {
+    padding: 25px 15px;
+    margin-bottom: 20px;
+    min-height: 135px;
+    border: 1px solid #ff477e55;
+    border-radius: 18px;
+    text-align: center;
+    background: linear-gradient(135deg, #ff477e15, #0002);
+}
+
+.command-title {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: .8rem;
+    margin-bottom: 12px;
+}
+
+.command-text {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.command-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.table-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 25px 10px;
+    margin-bottom: 20px;
+    background: #ffffff04;
+    border-radius: 15px;
+}
+
+.pile-label {
+    color: #bba6b1;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: .9rem;
 }
 
 .card {
-  min-height: 260px;
-  border-radius: 20px;
-  padding: 23px 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #fdf8fa;
-  color: #29152d;
-  transition: background .25s;
+    width: 90px;
+    height: 135px;
+    border-radius: 12px;
+    padding: 8px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    font-weight: 900;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px #0006;
+    transition: transform .2s, box-shadow .2s;
+    flex-shrink: 0;
 }
 
-.card.red { background: #ffe1e8; }
-.card.blue { background: #dceaff; }
-.card.green { background: #dcf7e6; }
-.card.yellow { background: #fff0bd; }
-.card.special { background: #f3dfff; }
-
-.category {
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  opacity: .75;
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px #ff477e55;
 }
 
-.activity {
-  font-size: clamp(23px, 6vw, 30px);
-  font-weight: 800;
-  line-height: 1.25;
-  margin: 19px 0 12px;
+.card.red { background: var(--red); }
+.card.blue { background: var(--blue); }
+.card.yellow { background: var(--yellow); color: #241a00; }
+.card.green { background: var(--green); }
+
+.card.wild {
+    background: conic-gradient(
+        var(--red),
+        var(--yellow),
+        var(--green),
+        var(--blue),
+        var(--red)
+    );
 }
 
-.description {
-  font-size: 15px;
-  line-height: 1.65;
-  max-width: 320px;
+.card.back {
+    background: linear-gradient(135deg, #5c1634, #180b17);
+    border-color: var(--gold);
+    color: var(--gold);
+    justify-content: center;
+    align-items: center;
+    font-size: 2.3rem;
 }
 
-.card-symbol {
-  font-size: 28px;
-  margin-bottom: 7px;
+.card-center {
+    align-self: center;
+    font-size: 2rem;
 }
 
-button {
-  width: 100%;
-  border: none;
-  border-radius: 13px;
-  padding: 16px 12px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform .15s, opacity .15s;
+.card-bottom {
+    align-self: flex-end;
+    transform: rotate(180deg);
 }
 
-button:active { transform: scale(.98); }
-
-.primary {
-  background: linear-gradient(100deg, #ff4f87, #ff826c);
-  color: white;
-  margin-top: 18px;
-  box-shadow: 0 6px 20px #ff4f8733;
+.card.disabled {
+    opacity: .45;
+    cursor: not-allowed;
 }
 
-.secondary {
-  background: #38223b;
-  color: #ffe4f0;
-  border: 1px solid #70415f;
-  margin-top: 10px;
+.player-hand-section {
+    background: #0003;
+    padding: 20px;
+    border-radius: 15px;
 }
 
-.buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.hand-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: var(--gold);
 }
 
-.buttons button {
-  font-size: 14px;
-  padding: 13px 8px;
+.hand-cards {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 20px 5px;
+    min-height: 175px;
+    scrollbar-color: var(--rose) #21121b;
 }
 
-.counter {
-  margin: 15px 0 0;
-  font-size: 12px;
-  color: var(--muted);
+.btn {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 9px;
+    background: var(--pink);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn:hover {
+    background: #ff1453;
+    transform: translateY(-2px);
+}
+
+.btn.secondary {
+    background: #45303c;
+    border: 1px solid #ffffff20;
+}
+
+.btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .rules {
-  margin-top: 18px;
-  background: #211324;
-  border: 1px solid #492c48;
-  padding: 16px;
-  border-radius: 17px;
-  text-align: left;
+    margin-top: 20px;
+    color: #a9919e;
+    font-size: .85rem;
+    line-height: 1.6;
 }
 
-.rules summary {
-  cursor: pointer;
-  font-weight: bold;
-  color: var(--gold);
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000d;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-.rules p, .rules li {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
+.overlay.show {
+    display: flex;
 }
 
-.footer {
-  font-size: 12px;
-  color: #b99bb3;
-  margin-top: 20px;
-  line-height: 1.6;
+.modal {
+    width: 100%;
+    max-width: 420px;
+    background: #21121b;
+    border: 1px solid var(--pink);
+    border-radius: 22px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 0 50px #ff477e22;
 }
 
-.hidden { display: none; }
+.modal h2 {
+    color: var(--pink);
+}
+
+.color-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.color-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 3px solid white;
+    cursor: pointer;
+}
+
+.win-message {
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin: 20px 0;
+}
+
+@media (max-width: 500px) {
+    body {
+        padding: 10px;
+    }
+
+    #game-container {
+        padding: 12px;
+    }
+
+    .card {
+        width: 75px;
+        height: 115px;
+        font-size: 1.1rem;
+    }
+
+    .table-area {
+        gap: 20px;
+    }
+
+    .hand-cards {
+        gap: 8px;
+    }
+}
 </style>
 </head>
 
 <body>
-<main class="app">
 
-  <div class="heart">❤️</div>
-  <h1>SPICE UP UNO</h1>
-  <p class="subtitle">
-    Two players. One deck. Unexpected surprises.<br>
-    Let the next card decide your little adventure.
-  </p>
+<header>
+    <h1>INTIMATE UNO</h1>
+    <div class="subtitle">
+        After Dark · A Date Night Experience
+    </div>
+</header>
 
-  <div class="pills">
-    <span class="pill">🔴 Kisses</span>
-    <span class="pill">🔵 Massages</span>
-    <span class="pill">🟢 Sensory Play</span>
-    <span class="pill">🟡 Playful Challenges</span>
-  </div>
+<div id="game-container">
 
-  <section class="deck">
-    <div class="card special" id="activityCard">
-      <div class="card-symbol" id="symbol">🃏</div>
-      <div class="category" id="category">YOUR NEXT CHALLENGE</div>
-      <div class="activity" id="activity">Ready to play?</div>
-      <div class="description" id="description">
-        Take turns, tap the button, and reveal your next activity.
-      </div>
+    <div class="status-bar">
+        <div>
+            Current Turn:
+            <span id="current-turn" class="current-turn">Husband</span>
+        </div>
+
+        <div id="card-counts">
+            Husband: 7 | Wife: 7
+        </div>
+
+        <div class="level">
+            Level: <span id="level">1 · Flirty</span>
+        </div>
     </div>
 
-    <button class="primary" id="revealBtn" onclick="revealActivity()">
-      ✨ Reveal Activity
-    </button>
+    <div class="command-box">
+        <div class="command-title" id="command-title">
+            Your Intimate Challenge
+        </div>
 
-    <div class="buttons">
-      <button class="secondary" onclick="repeatActivity()">
-        🔁 Do It Again
-      </button>
-      <button class="secondary" onclick="skipActivity()">
-        ⏭️ Skip Activity
-      </button>
+        <div class="command-text" id="command-text">
+            Let the evening begin. Play your first card.
+        </div>
+
+        <div class="command-actions">
+            <button class="btn secondary" onclick="passChallenge()">
+                Pass Challenge
+            </button>
+        </div>
     </div>
 
-    <div class="counter" id="counter">
-      Your surprise deck is ready!
+    <div class="table-area">
+
+        <div class="deck-pile">
+            <div class="pile-label">Draw Pile</div>
+
+            <div class="card back"
+                 id="draw-pile"
+                 onclick="drawCard()">
+                ♥
+            </div>
+        </div>
+
+        <div class="discard-pile">
+            <div class="pile-label">Active Card</div>
+            <div id="top-discard"></div>
+        </div>
+
     </div>
-  </section>
 
-  <details class="rules">
-    <summary>❤️ How to Play</summary>
-    <p>
-      1. Play regular UNO with your usual rules.<br>
-      2. After playing a card, tap Reveal Activity.<br>
-      3. Complete the revealed challenge together, if both agree.<br>
-      4. Take turns and enjoy the surprises.<br>
-      5. Use Skip whenever you like, with no penalty.
-    </p>
-    <p>
-      <b>Optional UNO twists:</b><br>
-      🔴 Red: A kissing challenge.<br>
-      🔵 Blue: A relaxing massage.<br>
-      🟢 Green: A sensory experience.<br>
-      🟡 Yellow: A playful couple's challenge.<br>
-      🃏 Wild: Choose a challenge together.<br>
-      +2: Add a little extra time to a mutually chosen activity.<br>
-      Reverse: Switch who gives and receives.<br>
-      Skip: Choose to pass on the activity.<br>
-      +4: Pick from four activities, then agree on one.
-    </p>
-    <p>
-      These twists are optional house rules. You can adapt them
-      to match the UNO cards you play.
-    </p>
-  </details>
+    <div class="player-hand-section">
 
-  <p class="footer">
-    Made for two people who love each other 💕<br>
-    Every activity is optional. Communication comes first.
-  </p>
+        <div class="hand-title">
+            <span id="hand-owner">Husband's Hand</span>
 
-</main>
+            <button class="btn secondary" onclick="passTurn()">
+                End Turn
+            </button>
+        </div>
+
+        <div class="hand-cards" id="player-hand"></div>
+
+    </div>
+
+    <div class="rules">
+        <strong>How to play:</strong>
+        Match the active card by color or symbol.
+        Number cards trigger intimate challenges.
+        Special cards change the game.
+        Wild cards allow you to choose a color.
+
+        <br><br>
+
+        <strong>Our rule:</strong>
+        Either partner can pass any challenge.
+        No pressure, no penalties.
+        The goal is to enjoy each other.
+    </div>
+
+</div>
+
+<!-- Wild Color Modal -->
+
+<div class="overlay" id="wild-overlay">
+    <div class="modal">
+        <h2>Choose Your Color</h2>
+
+        <p>Which energy will guide the next turn?</p>
+
+        <div class="color-options">
+            <button class="color-btn"
+                    style="background:var(--red)"
+                    onclick="selectWildColor('red')"></button>
+
+            <button class="color-btn"
+                    style="background:var(--blue)"
+                    onclick="selectWildColor('blue')"></button>
+
+            <button class="color-btn"
+                    style="background:var(--yellow)"
+                    onclick="selectWildColor('yellow')"></button>
+
+            <button class="color-btn"
+                    style="background:var(--green)"
+                    onclick="selectWildColor('green')"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Winner Modal -->
+
+<div class="overlay" id="win-overlay">
+    <div class="modal">
+        <h2>Game Over ❤️</h2>
+
+        <div class="win-message" id="winner-text">
+            You win!
+        </div>
+
+        <p>
+            The cards are finished.
+            The evening is yours.
+        </p>
+
+        <button class="btn" onclick="restartGame()">
+            Play Again
+        </button>
+    </div>
+</div>
 
 <script>
-const activities = [
-  {
-    color: "red",
-    symbol: "💋",
-    category: "RED • KISSING",
-    title: "The 10-Second Kiss",
-    description: "Share a slow, affectionate kiss for 10 seconds."
-  },
-  {
-    color: "red",
-    symbol: "😘",
-    category: "RED • KISSING",
-    title: "Three Little Kisses",
-    description: "Give three kisses wherever your partner would enjoy them."
-  },
-  {
-    color: "red",
-    symbol: "❤️",
-    category: "RED • ROMANCE",
-    title: "The Favourite Thing",
-    description: "Kiss your partner and whisper one thing you adore about them."
-  },
-  {
-    color: "red",
-    symbol: "💋",
-    category: "RED • KISSING",
-    title: "Your Choice",
-    description: "Let your partner choose a mutually comfortable place for a kiss."
-  },
-  {
-    color: "red",
-    symbol: "🥰",
-    category: "RED • ROMANCE",
-    title: "The Movie Moment",
-    description: "Recreate a romantic movie moment together for 15 seconds."
-  },
-  {
-    color: "red",
-    symbol: "💕",
-    category: "RED • ROMANCE",
-    title: "Forehead Kiss",
-    description: "Give your partner a gentle forehead kiss and a warm hug."
-  },
 
-  {
-    color: "blue",
-    symbol: "💆",
-    category: "BLUE • MASSAGE",
-    title: "Shoulder Relaxation",
-    description: "Give your partner a gentle shoulder massage for 30 seconds."
-  },
-  {
-    color: "blue",
-    symbol: "🫶",
-    category: "BLUE • TOUCH",
-    title: "Hand in Hand",
-    description: "Hold hands and trace gentle patterns on each other's palms."
-  },
-  {
-    color: "blue",
-    symbol: "✨",
-    category: "BLUE • MASSAGE",
-    title: "Back Rub",
-    description: "Offer a relaxing back or upper-arm massage for 30 seconds."
-  },
-  {
-    color: "blue",
-    symbol: "🤗",
-    category: "BLUE • CLOSENESS",
-    title: "The Long Hug",
-    description: "Enjoy a comfortable, uninterrupted 20-second hug."
-  },
-  {
-    color: "blue",
-    symbol: "🪶",
-    category: "BLUE • TOUCH",
-    title: "Gentle Tracing",
-    description: "Trace a heart on your partner's hand or arm with one finger."
-  },
-  {
-    color: "blue",
-    symbol: "💗",
-    category: "BLUE • MASSAGE",
-    title: "Your Choice Massage",
-    description: "Ask your partner where they would like a gentle massage."
-  },
+// ============================================
+// GAME SETTINGS
+// ============================================
 
-  {
-    color: "green",
-    symbol: "🙈",
-    category: "GREEN • SENSORY PLAY",
-    title: "Guess the Touch",
-    description: "Close your eyes while your partner gently touches your hand. Guess which finger they used."
-  },
-  {
-    color: "green",
-    symbol: "🎵",
-    category: "GREEN • SENSORY PLAY",
-    title: "The Love Song",
-    description: "Play a favourite romantic song and sway together for 30 seconds."
-  },
-  {
-    color: "green",
-    symbol: "🌸",
-    category: "GREEN • SENSORY PLAY",
-    title: "A Little Surprise",
-    description: "Let your partner choose a gentle, comfortable touch on your hand or arm."
-  },
-  {
-    color: "green",
-    symbol: "👀",
-    category: "GREEN • CONNECTION",
-    title: "Eye Contact",
-    description: "Look into each other's eyes for 15 seconds, then share a smile."
-  },
-  {
-    color: "green",
-    symbol: "💭",
-    category: "GREEN • FANTASY",
-    title: "Dream Date",
-    description: "Describe your ideal romantic evening together in three sentences."
-  },
-  {
-    color: "green",
-    symbol: "🌹",
-    category: "GREEN • SENSORY PLAY",
-    title: "Choose a Sense",
-    description: "Choose a comfortable sensory activity together: music, a soft fabric, or a favourite fragrance."
-  },
+const players = ["Husband", "Wife"];
 
-  {
-    color: "yellow",
-    symbol: "😉",
-    category: "YELLOW • PLAYFUL",
-    title: "The Flirty Compliment",
-    description: "Give your partner a compliment that makes them blush."
-  },
-  {
-    color: "yellow",
-    symbol: "💃",
-    category: "YELLOW • PLAYFUL",
-    title: "Private Dance",
-    description: "Dance together for 20 seconds. No choreography required!"
-  },
-  {
-    color: "yellow",
-    symbol: "🤫",
-    category: "YELLOW • SECRETS",
-    title: "Whisper a Secret",
-    description: "Share a sweet memory or a romantic wish with your partner."
-  },
-  {
-    color: "yellow",
-    symbol: "🎭",
-    category: "YELLOW • ACTING",
-    title: "First-Date Replay",
-    description: "Pretend you are meeting for the first time. One person must flirt!"
-  },
-  {
-    color: "yellow",
-    symbol: "❤️",
-    category: "YELLOW • CONNECTION",
-    title: "Two Truths",
-    description: "Share two things you love about your relationship."
-  },
-  {
-    color: "yellow",
-    symbol: "🎁",
-    category: "YELLOW • SURPRISE",
-    title: "Your Partner's Choice",
-    description: "Let your partner choose one affectionate activity from this deck."
-  },
-
-  {
-    color: "special",
-    symbol: "🃏",
-    category: "WILD • YOUR CHOICE",
-    title: "Make the Rules",
-    description: "Suggest a romantic activity. Your partner gets to accept, modify, or choose another."
-  },
-  {
-    color: "special",
-    symbol: "🔄",
-    category: "REVERSE • SWITCH",
-    title: "Switch Roles",
-    description: "If you both agree, switch who gives and receives the next massage or affectionate gesture."
-  },
-  {
-    color: "special",
-    symbol: "⏭️",
-    category: "SKIP • YOUR CHOICE",
-    title: "Free Pass",
-    description: "You can pass this activity without penalty, or choose a different one together."
-  },
-  {
-    color: "special",
-    symbol: "💖",
-    category: "WILD • ROMANCE",
-    title: "The Sweet Request",
-    description: "Each partner suggests one affectionate activity. Choose one you both want."
-  },
-  {
-    color: "special",
-    symbol: "🔥",
-    category: "WILD • FLIRTY",
-    title: "Turn Up the Romance",
-    description: "Ask your partner whether they want a kiss, a massage, or a playful challenge."
-  },
-  {
-    color: "special",
-    symbol: "💞",
-    category: "WILD • CONNECTION",
-    title: "The Grand Gesture",
-    description: "Give your partner a hug and tell them one thing that makes them special to you."
-  }
-];
+let hands = {
+    Husband: [],
+    Wife: []
+};
 
 let deck = [];
-let currentActivity = null;
-let completed = 0;
+let discard = [];
+
+let currentPlayer = 0;
+let currentColor = null;
+let direction = 1;
+
+let pendingWild = null;
+let gameOver = false;
+let lastChallenge = "";
+
+const colors = ["red", "blue", "yellow", "green"];
+
+// ============================================
+// INTIMATE CHALLENGES
+// ============================================
+
+const commands = {
+
+    red: [
+        "Give your partner a slow, passionate 10-second kiss.",
+        "Whisper something you find irresistible about your partner.",
+        "Tell your partner one romantic fantasy you would love to share.",
+        "Give your partner a sensual shoulder massage for one minute.",
+        "Look into your partner's eyes and say what makes them irresistible.",
+        "Give your partner three slow kisses wherever they choose.",
+        "Tell your partner what you would love to do on your next romantic date.",
+        "Share a memory of a moment when you couldn't stop thinking about your partner."
+    ],
+
+    blue: [
+        "Hold your partner close and maintain eye contact for 30 seconds.",
+        "Tell your partner which outfit makes them look most attractive.",
+        "Give your partner a warm hug from behind.",
+        "Hold hands until your next turn.",
+        "Whisper three things you love about your partner.",
+        "Give your partner a gentle kiss on the forehead, cheek, or lips.",
+        "Tell your partner what first attracted you to them.",
+        "Slowly dance together for one minute."
+    ],
+
+    yellow: [
+        "Trace your fingers gently along your partner's arm.",
+        "Give your partner three sincere compliments.",
+        "Give your partner a playful, affectionate kiss.",
+        "Sit close together until your next turn.",
+        "Let your partner choose a romantic song for you both.",
+        "Tell your partner what makes them special to you.",
+        "Give your partner a gentle hand massage.",
+        "Share your favorite thing about being married to your partner."
+    ],
+
+    green: [
+        "Give your partner a relaxing one-minute massage.",
+        "Send your partner a flirty message while sitting beside them.",
+        "Give your partner a long, warm embrace.",
+        "Tell your partner something you have always wanted to say.",
+        "Let your partner choose your next affectionate gesture.",
+        "Give your partner a kiss and a sincere compliment.",
+        "Ask your partner what would make tonight feel special.",
+        "Plan a surprise romantic date together."
+    ]
+};
+
+// ============================================
+// DECK CREATION
+// ============================================
+
+function createDeck() {
+
+    deck = [];
+
+    colors.forEach(color => {
+
+        deck.push({
+            color,
+            value: "0",
+            type: "number"
+        });
+
+        for (let n = 1; n <= 9; n++) {
+
+            for (let copy = 0; copy < 2; copy++) {
+
+                deck.push({
+                    color,
+                    value: String(n),
+                    type: "number"
+                });
+
+            }
+        }
+
+        ["Skip", "Reverse", "Draw Two"].forEach(action => {
+
+            for (let copy = 0; copy < 2; copy++) {
+
+                deck.push({
+                    color,
+                    value: action,
+                    type: action
+                });
+
+            }
+
+        });
+
+    });
+
+    for (let i = 0; i < 4; i++) {
+
+        deck.push({
+            color: "wild",
+            value: "Wild",
+            type: "wild"
+        });
+
+        deck.push({
+            color: "wild",
+            value: "Wild +4",
+            type: "wild4"
+        });
+
+    }
+
+    shuffle(deck);
+}
+
+// ============================================
+// SHUFFLE
+// ============================================
 
 function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
+
+    for (let i = array.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [array[i], array[j]] = [array[j], array[i]];
+
+    }
+
 }
 
-function makeDeck() {
-  deck = shuffle([...activities]);
-  completed = 0;
+// ============================================
+// INITIALIZE GAME
+// ============================================
+
+function startGame() {
+
+    createDeck();
+
+    hands = {
+        Husband: [],
+        Wife: []
+    };
+
+    discard = [];
+
+    currentPlayer = 0;
+    currentColor = null;
+    direction = 1;
+
+    pendingWild = null;
+    gameOver = false;
+    lastChallenge = "";
+
+    document.getElementById("command-title").textContent =
+        "Your Intimate Challenge";
+
+    document.getElementById("command-text").textContent =
+        "Let the evening begin. Play your first card.";
+
+    for (let i = 0; i < 7; i++) {
+
+        players.forEach(player => {
+            hands[player].push(deck.pop());
+        });
+
+    }
+
+    let firstCard;
+
+    do {
+        firstCard = deck.pop();
+    } while (firstCard.type !== "number");
+
+    discard.push(firstCard);
+    currentColor = firstCard.color;
+
+    render();
 }
 
-function revealActivity() {
-  if (deck.length === 0) {
-    makeDeck();
-    document.getElementById("counter").textContent =
-      "New round! All activities shuffled again.";
-  }
+// ============================================
+// RENDER GAME
+// ============================================
 
-  // Avoid immediately repeating the previous activity.
-  if (
-    deck.length > 1 &&
-    currentActivity &&
-    deck[deck.length - 1] === currentActivity
-  ) {
-    [deck[0], deck[deck.length - 1]] =
-      [deck[deck.length - 1], deck[0]];
-  }
+function render() {
 
-  currentActivity = deck.pop();
-  completed++;
+    const player = players[currentPlayer];
 
-  const card = document.getElementById("activityCard");
-  card.className = "card " + currentActivity.color;
+    document.getElementById("current-turn").textContent = player;
 
-  document.getElementById("symbol").textContent =
-    currentActivity.symbol;
+    document.getElementById("hand-owner").textContent =
+        player + "'s Hand";
 
-  document.getElementById("category").textContent =
-    currentActivity.category;
+    document.getElementById("card-counts").textContent =
+        `Husband: ${hands.Husband.length} | Wife: ${hands.Wife.length}`;
 
-  document.getElementById("activity").textContent =
-    currentActivity.title;
+    const count = hands[player].length;
 
-  document.getElementById("description").textContent =
-    currentActivity.description;
+    let level = "1 · Flirty";
 
-  document.getElementById("counter").textContent =
-    `${completed} revealed • ${deck.length} activities remaining`;
+    if (count <= 5) level = "2 · Getting Closer";
+    if (count <= 3) level = "3 · After Dark";
+    if (count <= 1) level = "4 · Intimate";
 
-  document.getElementById("revealBtn").textContent =
-    "✨ Reveal Next Activity";
+    document.getElementById("level").textContent = level;
+
+    renderHand();
+    renderDiscard();
 }
 
-function repeatActivity() {
-  if (!currentActivity) {
-    revealActivity();
-    return;
-  }
+// ============================================
+// RENDER HAND
+// ============================================
 
-  document.getElementById("counter").textContent =
-    "Same activity selected again ❤️";
+function renderHand() {
+
+    const container = document.getElementById("player-hand");
+
+    container.innerHTML = "";
+
+    const player = players[currentPlayer];
+
+    hands[player].forEach((card, index) => {
+
+        const element = createCardElement(card);
+
+        element.onclick = () => playCard(index);
+
+        if (gameOver || pendingWild) {
+            element.classList.add("disabled");
+        }
+
+        container.appendChild(element);
+
+    });
+
 }
 
-function skipActivity() {
-  if (!currentActivity) {
-    revealActivity();
-    return;
-  }
+// ============================================
+// CREATE CARD ELEMENT
+// ============================================
 
-  revealActivity();
+function createCardElement(card) {
+
+    const element = document.createElement("div");
+
+    element.className = `card ${card.color}`;
+
+    let symbol = card.value;
+
+    if (card.type === "Skip") symbol = "⊘";
+    if (card.type === "Reverse") symbol = "↻";
+    if (card.type === "Draw Two") symbol = "+2";
+    if (card.type === "wild") symbol = "W";
+    if (card.type === "wild4") symbol = "+4";
+
+    element.innerHTML = `
+        <div>${symbol}</div>
+        <div class="card-center">${symbol}</div>
+        <div class="card-bottom">${symbol}</div>
+    `;
+
+    return element;
 }
 
-makeDeck();
+// ============================================
+// RENDER DISCARD
+// ============================================
+
+function renderDiscard() {
+
+    const container = document.getElementById("top-discard");
+
+    container.innerHTML = "";
+
+    const card = discard[discard.length - 1];
+
+    container.appendChild(createCardElement(card));
+}
+
+// ============================================
+// CARD MATCHING
+// ============================================
+
+function isPlayable(card) {
+
+    const top = discard[discard.length - 1];
+
+    return (
+        card.color === currentColor ||
+        card.value === top.value ||
+        card.color === "wild"
+    );
+}
+
+// ============================================
+// PLAY CARD
+// ============================================
+
+function playCard(index) {
+
+    if (gameOver || pendingWild) return;
+
+    const player = players[currentPlayer];
+
+    const card = hands[player][index];
+
+    if (!isPlayable(card)) {
+
+        alert("Match the color or symbol of the active card.");
+
+        return;
+    }
+
+    hands[player].splice(index, 1);
+
+    discard.push(card);
+
+    if (card.type === "wild" || card.type === "wild4") {
+
+        pendingWild = card;
+
+        document.getElementById("wild-overlay")
+            .classList.add("show");
+
+        render();
+
+        return;
+    }
+
+    currentColor = card.color;
+
+    triggerChallenge(card);
+
+    if (hands[player].length === 0) {
+
+        endGame(player);
+
+        return;
+    }
+
+    if (hands[player].length === 1) {
+
+        alert(player + " says UNO! ❤️");
+    }
+
+    applySpecialCard(card);
+
+    render();
+}
+
+// ============================================
+// SPECIAL CARDS
+// ============================================
+
+function applySpecialCard(card) {
+
+    if (card.type === "Skip") {
+
+        nextPlayer();
+
+        document.getElementById("command-text").textContent =
+            players[currentPlayer] + " has been skipped.";
+
+        nextPlayer();
+
+        return;
+    }
+
+    if (card.type === "Reverse") {
+
+        direction *= -1;
+
+        nextPlayer();
+
+        return;
+    }
+
+    if (card.type === "Draw Two") {
+
+        nextPlayer();
+
+        drawCards(2);
+
+        document.getElementById("command-text").textContent =
+            players[currentPlayer] +
+            " draws two cards and misses their turn.";
+
+        nextPlayer();
+
+        return;
+    }
+
+    nextPlayer();
+}
+
+// ============================================
+// WILD COLOR
+// ============================================
+
+function selectWildColor(color) {
+
+    if (!pendingWild) return;
+
+    currentColor = color;
+
+    const card = pendingWild;
+
+    pendingWild = null;
+
+    document.getElementById("wild-overlay")
+        .classList.remove("show");
+
+    triggerChallenge(card);
+
+    const player = players[currentPlayer];
+
+    if (hands[player].length === 0) {
+
+        endGame(player);
+
+        return;
+    }
+
+    if (hands[player].length === 1) {
+
+        alert(player + " says UNO! ❤️");
+    }
+
+    if (card.type === "wild4") {
+
+        nextPlayer();
+
+        drawCards(4);
+
+        document.getElementById("command-text").textContent =
+            players[currentPlayer] +
+            " draws four cards and misses their turn.";
+
+        nextPlayer();
+
+    } else {
+
+        nextPlayer();
+    }
+
+    render();
+}
+
+// ============================================
+// DRAW CARDS
+// ============================================
+
+function drawCards(amount) {
+
+    const player = players[currentPlayer];
+
+    for (let i = 0; i < amount; i++) {
+
+        if (deck.length === 0) {
+            reshuffleDiscard();
+        }
+
+        if (deck.length > 0) {
+            hands[player].push(deck.pop());
+        }
+    }
+}
+
+// ============================================
+// DRAW ONE CARD
+// ============================================
+
+function drawCard() {
+
+    if (gameOver || pendingWild) return;
+
+    drawCards(1);
+
+    render();
+
+}
+
+// ============================================
+// RESHUFFLE DISCARD PILE
+// ============================================
+
+function reshuffleDiscard() {
+
+    if (discard.length <= 1) return;
+
+    const top = discard.pop();
+
+    deck = discard;
+
+    shuffle(deck);
+
+    discard = [top];
+}
+
+// ============================================
+// NEXT PLAYER
+// ============================================
+
+function nextPlayer() {
+
+    currentPlayer =
+        (currentPlayer + direction + players.length) %
+        players.length;
+}
+
+// ============================================
+// PASS / END TURN
+// ============================================
+
+function passTurn() {
+
+    if (gameOver || pendingWild) return;
+
+    nextPlayer();
+
+    render();
+}
+
+// ============================================
+// CHALLENGE GENERATOR
+// ============================================
+
+function triggerChallenge(card) {
+
+    let pool = [];
+
+    if (card.color === "wild") {
+
+        pool = [
+            "Choose a color that matches your mood and tell your partner why.",
+            "Ask your partner for a romantic challenge of their choice.",
+            "Tell your partner one thing you would love to experience together."
+        ];
+
+    } else {
+
+        pool = commands[card.color];
+    }
+
+    let command;
+
+    do {
+
+        command = pool[
+            Math.floor(Math.random() * pool.length)
+        ];
+
+    } while (pool.length > 1 && command === lastChallenge);
+
+    lastChallenge = command;
+
+    document.getElementById("command-title").textContent =
+        "Your Intimate Challenge";
+
+    document.getElementById("command-text").textContent =
+        command;
+}
+
+// ============================================
+// PASS CHALLENGE
+// ============================================
+
+function passChallenge() {
+
+    document.getElementById("command-title").textContent =
+        "Challenge Skipped";
+
+    document.getElementById("command-text").textContent =
+        "No pressure. Choose another challenge or simply enjoy the moment. ❤️";
+}
+
+// ============================================
+// WINNER
+// ============================================
+
+function endGame(player) {
+
+    gameOver = true;
+
+    document.getElementById("winner-text").textContent =
+        player + " wins! ❤️";
+
+    document.getElementById("win-overlay")
+        .classList.add("show");
+}
+
+// ============================================
+// RESTART
+// ============================================
+
+function restartGame() {
+
+    document.getElementById("win-overlay")
+        .classList.remove("show");
+
+    document.getElementById("wild-overlay")
+        .classList.remove("show");
+
+    startGame();
+}
+
+// ============================================
+// START
+// ============================================
+
+startGame();
+
 </script>
+
 </body>
 </html>
