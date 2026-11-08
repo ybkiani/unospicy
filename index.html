@@ -1,1121 +1,733 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#160910">
-<title>Intimate UNO | After Dark</title>
+<title>After Dark UNO</title>
 
 <style>
 :root {
-    --pink: #ff477e;
-    --rose: #c94b70;
-    --gold: #d8b477;
-    --dark: #10090d;
-    --panel: #21121b;
-    --red: #e53950;
-    --blue: #2878d0;
-    --yellow: #e6b72f;
-    --green: #299c69;
+  --bg: #10080e;
+  --panel: #21121d;
+  --pink: #ff3f83;
+  --purple: #8b4dff;
+  --text: #fff4fa;
+  --muted: #c5aaba;
+  --border: #503044;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    padding: 20px;
-    font-family: "Segoe UI", sans-serif;
-    color: #fff;
-    background:
-        radial-gradient(ellipse at top, #421629 0%, transparent 55%),
-        linear-gradient(135deg, #10090d, #1d0c16);
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #42142f 0%, #180d18 45%, #090609 100%);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.app {
+  width: 100%;
+  max-width: 700px;
 }
 
 header {
-    text-align: center;
-    margin-bottom: 25px;
+  text-align: center;
+  margin-bottom: 24px;
 }
 
-h1 {
-    margin: 0;
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    letter-spacing: 3px;
-    color: var(--pink);
-    text-shadow: 0 0 25px #ff477e66;
+header h1 {
+  font-size: clamp(30px, 7vw, 48px);
+  margin: 10px 0;
+  color: #ff6a9e;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px #ff267755;
 }
 
-.subtitle {
-    color: #c9a9b6;
-    font-style: italic;
-    margin-top: 8px;
+header p {
+  color: var(--muted);
+  margin: 0;
 }
 
-#game-container {
-    max-width: 950px;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #ffffff15;
-    border-radius: 24px;
-    background: #ffffff08;
-    box-shadow: 0 20px 60px #0008;
-    backdrop-filter: blur(12px);
+.panel {
+  background: #21121ddd;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 12px 35px #0005;
 }
 
-.status-bar {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    background: #0004;
-    border-radius: 12px;
-    border-left: 4px solid var(--pink);
+.setup {
+  display: grid;
+  gap: 14px;
 }
 
-.current-turn {
-    color: var(--pink);
-    font-weight: bold;
+label {
+  display: block;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-size: 14px;
 }
 
-.level {
-    color: var(--gold);
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #120a11;
+  color: var(--text);
+  font-size: 16px;
 }
 
-.command-box {
-    padding: 25px 15px;
-    margin-bottom: 20px;
-    min-height: 135px;
-    border: 1px solid #ff477e55;
-    border-radius: 18px;
-    text-align: center;
-    background: linear-gradient(135deg, #ff477e15, #0002);
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 13px 18px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .15s, opacity .15s;
 }
 
-.command-title {
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: .8rem;
-    margin-bottom: 12px;
+button:active {
+  transform: scale(.97);
 }
 
-.command-text {
-    font-size: clamp(1.1rem, 3vw, 1.5rem);
-    line-height: 1.5;
-    font-style: italic;
+button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
 }
 
-.command-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 15px;
+.primary {
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: white;
 }
 
-.table-area {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    padding: 25px 10px;
-    margin-bottom: 20px;
-    background: #ffffff04;
-    border-radius: 15px;
+.secondary {
+  background: #382334;
+  border: 1px solid #654258;
+  color: white;
 }
 
-.pile-label {
-    color: #bba6b1;
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: .9rem;
+.danger {
+  background: #4a1728;
+  color: #ffb6cf;
+  border: 1px solid #8e3655;
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 18px;
 }
 
 .card {
-    width: 90px;
-    height: 135px;
-    border-radius: 12px;
-    padding: 8px;
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 1.3rem;
-    font-weight: 900;
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-    border: 3px solid white;
-    box-shadow: 0 5px 15px #0006;
-    transition: transform .2s, box-shadow .2s;
-    flex-shrink: 0;
+  min-height: 290px;
+  border-radius: 22px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border: 2px solid #ffffff55;
+  box-shadow: 0 12px 35px #0007;
+  position: relative;
+  overflow: hidden;
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px #ff477e55;
+.card::before {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  border: 2px solid #ffffff25;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.card.red { background: var(--red); }
-.card.blue { background: var(--blue); }
-.card.yellow { background: var(--yellow); color: #241a00; }
-.card.green { background: var(--green); }
-
-.card.wild {
-    background: conic-gradient(
-        var(--red),
-        var(--yellow),
-        var(--green),
-        var(--blue),
-        var(--red)
-    );
+.card-content {
+  position: relative;
+  z-index: 1;
 }
 
-.card.back {
-    background: linear-gradient(135deg, #5c1634, #180b17);
-    border-color: var(--gold);
-    color: var(--gold);
-    justify-content: center;
-    align-items: center;
-    font-size: 2.3rem;
+.card-category {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  opacity: .9;
 }
 
-.card-center {
-    align-self: center;
-    font-size: 2rem;
+.card-title {
+  font-size: clamp(25px, 6vw, 36px);
+  font-weight: 900;
+  margin: 24px 0;
 }
 
-.card-bottom {
-    align-self: flex-end;
-    transform: rotate(180deg);
+.card-prompt {
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.card.disabled {
-    opacity: .45;
-    cursor: not-allowed;
+.card-time {
+  margin-top: 22px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
-.player-hand-section {
-    background: #0003;
-    padding: 20px;
-    border-radius: 15px;
+.pink {
+  background: linear-gradient(145deg, #b91f5c, #5b153d);
 }
 
-.hand-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 10px;
-    color: var(--gold);
+.purple {
+  background: linear-gradient(145deg, #7837c9, #32135f);
 }
 
-.hand-cards {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding: 20px 5px;
-    min-height: 175px;
-    scrollbar-color: var(--rose) #21121b;
+.red {
+  background: linear-gradient(145deg, #c02c36, #5b111e);
 }
 
-.btn {
-    padding: 11px 18px;
-    border: none;
-    border-radius: 9px;
-    background: var(--pink);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: .2s;
+.blue {
+  background: linear-gradient(145deg, #3157bc, #17295d);
 }
 
-.btn:hover {
-    background: #ff1453;
-    transform: translateY(-2px);
+.green {
+  background: linear-gradient(145deg, #248b72, #10483e);
 }
 
-.btn.secondary {
-    background: #45303c;
-    border: 1px solid #ffffff20;
+.hidden {
+  display: none !important;
 }
 
-.btn:disabled {
-    opacity: .4;
-    cursor: not-allowed;
-    transform: none;
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
 }
 
-.rules {
-    margin-top: 20px;
-    color: #a9919e;
-    font-size: .85rem;
-    line-height: 1.6;
+.actions button {
+  min-height: 48px;
 }
 
-.overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #000d;
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+.timer {
+  font-size: 42px;
+  font-weight: bold;
+  text-align: center;
+  margin: 14px 0;
+  color: #ff76a8;
 }
 
-.overlay.show {
-    display: flex;
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.modal {
-    width: 100%;
-    max-width: 420px;
-    background: #21121b;
-    border: 1px solid var(--pink);
-    border-radius: 22px;
-    padding: 25px;
-    text-align: center;
-    box-shadow: 0 0 50px #ff477e22;
+.timer-controls button {
+  min-width: 100px;
 }
 
-.modal h2 {
-    color: var(--pink);
+.notice {
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 16px;
 }
 
-.color-options {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 25px 0;
+.current-player {
+  color: #ff8bb4;
+  font-weight: bold;
 }
 
-.color-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    border: 3px solid white;
-    cursor: pointer;
+footer {
+  text-align: center;
+  color: #9e8192;
+  font-size: 12px;
+  margin: 24px 0 10px;
 }
 
-.win-message {
-    font-size: 1.5rem;
-    color: var(--gold);
-    margin: 20px 0;
-}
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
 
-@media (max-width: 500px) {
-    body {
-        padding: 10px;
-    }
+  .panel {
+    padding: 15px;
+  }
 
-    #game-container {
-        padding: 12px;
-    }
+  .card {
+    min-height: 310px;
+    padding: 20px 15px;
+  }
 
-    .card {
-        width: 75px;
-        height: 115px;
-        font-size: 1.1rem;
-    }
-
-    .table-area {
-        gap: 20px;
-    }
-
-    .hand-cards {
-        gap: 8px;
-    }
+  .card-prompt {
+    font-size: 17px;
+  }
 }
 </style>
 </head>
 
 <body>
+<div class="app">
 
 <header>
-    <h1>INTIMATE UNO</h1>
-    <div class="subtitle">
-        After Dark · A Date Night Experience
-    </div>
+  <h1>AFTER DARK UNO</h1>
+  <p>A private game for two 💋</p>
 </header>
 
-<div id="game-container">
+<section class="panel setup" id="setupPanel">
 
-    <div class="status-bar">
-        <div>
-            Current Turn:
-            <span id="current-turn" class="current-turn">Husband</span>
-        </div>
+  <div>
+    <label for="playerOne">Player One</label>
+    <input id="playerOne" value="Partner 1" maxlength="20">
+  </div>
 
-        <div id="card-counts">
-            Husband: 7 | Wife: 7
-        </div>
+  <div>
+    <label for="playerTwo">Player Two</label>
+    <input id="playerTwo" value="Partner 2" maxlength="20">
+  </div>
 
-        <div class="level">
-            Level: <span id="level">1 · Flirty</span>
-        </div>
+  <div>
+    <label for="intensity">Game Intensity</label>
+    <select id="intensity">
+      <option value="warm">Warm-up</option>
+      <option value="hot" selected>Hot</option>
+      <option value="afterdark">After Dark</option>
+    </select>
+  </div>
+
+  <button class="primary" onclick="startGame()">Start Game</button>
+
+  <p class="notice">
+    For consenting adults. Every prompt is optional.
+    Either player can pass or stop at any time.
+  </p>
+</section>
+
+<section class="panel hidden" id="gamePanel">
+
+  <div class="game-info">
+    <span>Turn: <span class="current-player" id="turnName"></span></span>
+    <span>Cards played: <span id="playedCount">0</span></span>
+  </div>
+
+  <div class="card pink" id="gameCard">
+    <div class="card-content">
+      <div class="card-category" id="cardCategory">AFTER DARK</div>
+      <div class="card-title" id="cardTitle">Ready?</div>
+      <div class="card-prompt" id="cardPrompt">
+        Draw a card to begin.
+      </div>
+      <div class="card-time" id="cardTime"></div>
     </div>
+  </div>
 
-    <div class="command-box">
-        <div class="command-title" id="command-title">
-            Your Intimate Challenge
-        </div>
+  <div class="actions">
+    <button class="primary" id="drawButton" onclick="drawCard()">
+      Draw Card
+    </button>
 
-        <div class="command-text" id="command-text">
-            Let the evening begin. Play your first card.
-        </div>
+    <button class="secondary" id="doneButton" onclick="completeTurn()" disabled>
+      Done
+    </button>
 
-        <div class="command-actions">
-            <button class="btn secondary" onclick="passChallenge()">
-                Pass Challenge
-            </button>
-        </div>
-    </div>
+    <button class="secondary" id="passButton" onclick="passTurn()" disabled>
+      Pass
+    </button>
 
-    <div class="table-area">
+    <button class="danger" onclick="endGame()">
+      End Game
+    </button>
+  </div>
 
-        <div class="deck-pile">
-            <div class="pile-label">Draw Pile</div>
+  <div class="notice">
+    The player whose turn it is may draw a prompt, complete it, or pass.
+  </div>
+</section>
 
-            <div class="card back"
-                 id="draw-pile"
-                 onclick="drawCard()">
-                ♥
-            </div>
-        </div>
+<section class="panel hidden" id="timerPanel">
+  <h3 style="text-align:center;margin-top:0;">Challenge Timer</h3>
 
-        <div class="discard-pile">
-            <div class="pile-label">Active Card</div>
-            <div id="top-discard"></div>
-        </div>
+  <div class="timer" id="timerDisplay">00:00</div>
 
-    </div>
+  <div class="timer-controls">
+    <button class="secondary" onclick="startTimer()">Start</button>
+    <button class="secondary" onclick="pauseTimer()">Pause</button>
+    <button class="secondary" onclick="resetTimer()">Reset</button>
+  </div>
+</section>
 
-    <div class="player-hand-section">
+<footer>
+  AFTER DARK UNO · Private couple game
+</footer>
 
-        <div class="hand-title">
-            <span id="hand-owner">Husband's Hand</span>
-
-            <button class="btn secondary" onclick="passTurn()">
-                End Turn
-            </button>
-        </div>
-
-        <div class="hand-cards" id="player-hand"></div>
-
-    </div>
-
-    <div class="rules">
-        <strong>How to play:</strong>
-        Match the active card by color or symbol.
-        Number cards trigger intimate challenges.
-        Special cards change the game.
-        Wild cards allow you to choose a color.
-
-        <br><br>
-
-        <strong>Our rule:</strong>
-        Either partner can pass any challenge.
-        No pressure, no penalties.
-        The goal is to enjoy each other.
-    </div>
-
-</div>
-
-<!-- Wild Color Modal -->
-
-<div class="overlay" id="wild-overlay">
-    <div class="modal">
-        <h2>Choose Your Color</h2>
-
-        <p>Which energy will guide the next turn?</p>
-
-        <div class="color-options">
-            <button class="color-btn"
-                    style="background:var(--red)"
-                    onclick="selectWildColor('red')"></button>
-
-            <button class="color-btn"
-                    style="background:var(--blue)"
-                    onclick="selectWildColor('blue')"></button>
-
-            <button class="color-btn"
-                    style="background:var(--yellow)"
-                    onclick="selectWildColor('yellow')"></button>
-
-            <button class="color-btn"
-                    style="background:var(--green)"
-                    onclick="selectWildColor('green')"></button>
-        </div>
-    </div>
-</div>
-
-<!-- Winner Modal -->
-
-<div class="overlay" id="win-overlay">
-    <div class="modal">
-        <h2>Game Over ❤️</h2>
-
-        <div class="win-message" id="winner-text">
-            You win!
-        </div>
-
-        <p>
-            The cards are finished.
-            The evening is yours.
-        </p>
-
-        <button class="btn" onclick="restartGame()">
-            Play Again
-        </button>
-    </div>
 </div>
 
 <script>
+/*
+=========================================================
+EDITABLE PROMPTS
+Change, add, or remove prompts from these arrays.
+The game randomly selects prompts from the chosen level.
+=========================================================
+*/
 
-// ============================================
-// GAME SETTINGS
-// ============================================
+const PROMPTS = {
 
-const players = ["Husband", "Wife"];
-
-let hands = {
-    Husband: [],
-    Wife: []
-};
-
-let deck = [];
-let discard = [];
-
-let currentPlayer = 0;
-let currentColor = null;
-let direction = 1;
-
-let pendingWild = null;
-let gameOver = false;
-let lastChallenge = "";
-
-const colors = ["red", "blue", "yellow", "green"];
-
-// ============================================
-// INTIMATE CHALLENGES
-// ============================================
-
-const commands = {
-
-    red: [
-        "Give your partner a slow, passionate 10-second kiss.",
-        "Whisper something you find irresistible about your partner.",
-        "Tell your partner one romantic fantasy you would love to share.",
-        "Give your partner a sensual shoulder massage for one minute.",
-        "Look into your partner's eyes and say what makes them irresistible.",
-        "Give your partner three slow kisses wherever they choose.",
-        "Tell your partner what you would love to do on your next romantic date.",
-        "Share a memory of a moment when you couldn't stop thinking about your partner."
+  warm: {
+    clothing: [
+      "Remove one item of clothing, if you both agree.",
+      "Let your partner choose one item of clothing for you to remove.",
+      "Remove an accessory or clothing item of your choice.",
+      "Give your partner a playful kiss before removing one item.",
+      "Let your partner decide whether you remove an item or pass."
     ],
 
-    blue: [
-        "Hold your partner close and maintain eye contact for 30 seconds.",
-        "Tell your partner which outfit makes them look most attractive.",
-        "Give your partner a warm hug from behind.",
-        "Hold hands until your next turn.",
-        "Whisper three things you love about your partner.",
-        "Give your partner a gentle kiss on the forehead, cheek, or lips.",
-        "Tell your partner what first attracted you to them.",
-        "Slowly dance together for one minute."
+    kissing: [
+      "Share a slow kiss for 10 seconds.",
+      "Kiss your partner for 20 seconds.",
+      "Give your partner three gentle kisses.",
+      "Share a passionate kiss for 30 seconds.",
+      "Let your partner choose the kind of kiss."
     ],
 
-    yellow: [
-        "Trace your fingers gently along your partner's arm.",
-        "Give your partner three sincere compliments.",
-        "Give your partner a playful, affectionate kiss.",
-        "Sit close together until your next turn.",
-        "Let your partner choose a romantic song for you both.",
-        "Tell your partner what makes them special to you.",
-        "Give your partner a gentle hand massage.",
-        "Share your favorite thing about being married to your partner."
-    ],
-
-    green: [
-        "Give your partner a relaxing one-minute massage.",
-        "Send your partner a flirty message while sitting beside them.",
-        "Give your partner a long, warm embrace.",
-        "Tell your partner something you have always wanted to say.",
-        "Let your partner choose your next affectionate gesture.",
-        "Give your partner a kiss and a sincere compliment.",
-        "Ask your partner what would make tonight feel special.",
-        "Plan a surprise romantic date together."
+    sensual: [
+      "Give your partner a slow, sensual kiss on a mutually chosen area.",
+      "Hold your partner close for 20 seconds.",
+      "Share a lingering kiss for 30 seconds.",
+      "Give your partner a gentle kiss and let them choose what happens next."
     ]
+  },
+
+  hot: {
+    clothing: [
+      "Remove one item of clothing and let your partner choose the next prompt.",
+      "Remove an item of clothing slowly, if you both agree.",
+      "Let your partner choose one clothing item for you to remove.",
+      "Remove one item, then share a 20-second kiss.",
+      "Choose an item of clothing to remove together."
+    ],
+
+    kissing: [
+      "Share a deep kiss for 30 seconds.",
+      "Kiss your partner for 1 minute.",
+      "Share a series of slow kisses for 30 seconds.",
+      "Let your partner guide the pace of a 20-second kiss.",
+      "Share a passionate kiss for 1 minute."
+    ],
+
+    sensual: [
+      "Give your partner a slow, sensual kiss on a mutually chosen area for 20 seconds.",
+      "Share a close embrace and kiss for 1 minute.",
+      "Give your partner a lingering kiss and let them choose the next prompt.",
+      "Take turns giving gentle kisses for 30 seconds.",
+      "Let your partner choose a comfortable area for a sensual kiss."
+    ]
+  },
+
+  afterdark: {
+    clothing: [
+      "Remove one item of clothing, if you both want to continue.",
+      "Let your partner choose an item of clothing for you to remove.",
+      "Remove an item, then draw another card.",
+      "Choose an item to remove and let your partner choose the next challenge.",
+      "Remove one item and share a 1-minute kiss."
+    ],
+
+    kissing: [
+      "Share a passionate kiss for 1 minute.",
+      "Kiss your partner for 2 minutes.",
+      "Share slow, lingering kisses for 1 minute.",
+      "Let your partner choose the pace of a 30-second kiss.",
+      "Share a kiss for 2 minutes, pausing whenever either partner wants."
+    ],
+
+    sensual: [
+      "Give your partner a slow, sensual kiss on a mutually chosen area for 30 seconds.",
+      "Share a close embrace and kiss for 2 minutes.",
+      "Give your partner a lingering kiss for 1 minute.",
+      "Take turns giving gentle kisses for 30 seconds each.",
+      "Let your partner choose a comfortable area for a sensual kiss."
+    ]
+  }
 };
 
-// ============================================
-// DECK CREATION
-// ============================================
+/*
+=========================================================
+GAME SETTINGS
+=========================================================
+*/
 
-function createDeck() {
+const DURATIONS = [
+  10,
+  20,
+  30,
+  60,
+  120,
+  300
+];
 
-    deck = [];
+const DURATION_LABELS = {
+  10: "10 seconds",
+  20: "20 seconds",
+  30: "30 seconds",
+  60: "1 minute",
+  120: "2 minutes",
+  300: "5 minutes"
+};
 
-    colors.forEach(color => {
+const COLORS = {
+  clothing: "pink",
+  kissing: "purple",
+  sensual: "red"
+};
 
-        deck.push({
-            color,
-            value: "0",
-            type: "number"
-        });
+const CATEGORY_LABELS = {
+  clothing: "Clothing Removal",
+  kissing: "Kissing Challenge",
+  sensual: "Sensual Challenge"
+};
 
-        for (let n = 1; n <= 9; n++) {
+let players = [];
+let currentPlayer = 0;
+let played = 0;
+let currentPrompt = null;
+let gameStarted = false;
 
-            for (let copy = 0; copy < 2; copy++) {
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
 
-                deck.push({
-                    color,
-                    value: String(n),
-                    type: "number"
-                });
-
-            }
-        }
-
-        ["Skip", "Reverse", "Draw Two"].forEach(action => {
-
-            for (let copy = 0; copy < 2; copy++) {
-
-                deck.push({
-                    color,
-                    value: action,
-                    type: action
-                });
-
-            }
-
-        });
-
-    });
-
-    for (let i = 0; i < 4; i++) {
-
-        deck.push({
-            color: "wild",
-            value: "Wild",
-            type: "wild"
-        });
-
-        deck.push({
-            color: "wild",
-            value: "Wild +4",
-            type: "wild4"
-        });
-
-    }
-
-    shuffle(deck);
-}
-
-// ============================================
-// SHUFFLE
-// ============================================
-
-function shuffle(array) {
-
-    for (let i = array.length - 1; i > 0; i--) {
-
-        const j = Math.floor(Math.random() * (i + 1));
-
-        [array[i], array[j]] = [array[j], array[i]];
-
-    }
-
-}
-
-// ============================================
-// INITIALIZE GAME
-// ============================================
+/*
+=========================================================
+START GAME
+=========================================================
+*/
 
 function startGame() {
+  const p1 = document.getElementById("playerOne").value.trim() || "Partner 1";
+  const p2 = document.getElementById("playerTwo").value.trim() || "Partner 2";
 
-    createDeck();
+  players = [p1, p2];
+  currentPlayer = 0;
+  played = 0;
+  currentPrompt = null;
+  gameStarted = true;
 
-    hands = {
-        Husband: [],
-        Wife: []
-    };
+  document.getElementById("setupPanel").classList.add("hidden");
+  document.getElementById("gamePanel").classList.remove("hidden");
+  document.getElementById("timerPanel").classList.remove("hidden");
 
-    discard = [];
-
-    currentPlayer = 0;
-    currentColor = null;
-    direction = 1;
-
-    pendingWild = null;
-    gameOver = false;
-    lastChallenge = "";
-
-    document.getElementById("command-title").textContent =
-        "Your Intimate Challenge";
-
-    document.getElementById("command-text").textContent =
-        "Let the evening begin. Play your first card.";
-
-    for (let i = 0; i < 7; i++) {
-
-        players.forEach(player => {
-            hands[player].push(deck.pop());
-        });
-
-    }
-
-    let firstCard;
-
-    do {
-        firstCard = deck.pop();
-    } while (firstCard.type !== "number");
-
-    discard.push(firstCard);
-    currentColor = firstCard.color;
-
-    render();
+  updateTurn();
+  resetCard();
 }
 
-// ============================================
-// RENDER GAME
-// ============================================
-
-function render() {
-
-    const player = players[currentPlayer];
-
-    document.getElementById("current-turn").textContent = player;
-
-    document.getElementById("hand-owner").textContent =
-        player + "'s Hand";
-
-    document.getElementById("card-counts").textContent =
-        `Husband: ${hands.Husband.length} | Wife: ${hands.Wife.length}`;
-
-    const count = hands[player].length;
-
-    let level = "1 · Flirty";
-
-    if (count <= 5) level = "2 · Getting Closer";
-    if (count <= 3) level = "3 · After Dark";
-    if (count <= 1) level = "4 · Intimate";
-
-    document.getElementById("level").textContent = level;
-
-    renderHand();
-    renderDiscard();
-}
-
-// ============================================
-// RENDER HAND
-// ============================================
-
-function renderHand() {
-
-    const container = document.getElementById("player-hand");
-
-    container.innerHTML = "";
-
-    const player = players[currentPlayer];
-
-    hands[player].forEach((card, index) => {
-
-        const element = createCardElement(card);
-
-        element.onclick = () => playCard(index);
-
-        if (gameOver || pendingWild) {
-            element.classList.add("disabled");
-        }
-
-        container.appendChild(element);
-
-    });
-
-}
-
-// ============================================
-// CREATE CARD ELEMENT
-// ============================================
-
-function createCardElement(card) {
-
-    const element = document.createElement("div");
-
-    element.className = `card ${card.color}`;
-
-    let symbol = card.value;
-
-    if (card.type === "Skip") symbol = "⊘";
-    if (card.type === "Reverse") symbol = "↻";
-    if (card.type === "Draw Two") symbol = "+2";
-    if (card.type === "wild") symbol = "W";
-    if (card.type === "wild4") symbol = "+4";
-
-    element.innerHTML = `
-        <div>${symbol}</div>
-        <div class="card-center">${symbol}</div>
-        <div class="card-bottom">${symbol}</div>
-    `;
-
-    return element;
-}
-
-// ============================================
-// RENDER DISCARD
-// ============================================
-
-function renderDiscard() {
-
-    const container = document.getElementById("top-discard");
-
-    container.innerHTML = "";
-
-    const card = discard[discard.length - 1];
-
-    container.appendChild(createCardElement(card));
-}
-
-// ============================================
-// CARD MATCHING
-// ============================================
-
-function isPlayable(card) {
-
-    const top = discard[discard.length - 1];
-
-    return (
-        card.color === currentColor ||
-        card.value === top.value ||
-        card.color === "wild"
-    );
-}
-
-// ============================================
-// PLAY CARD
-// ============================================
-
-function playCard(index) {
-
-    if (gameOver || pendingWild) return;
-
-    const player = players[currentPlayer];
-
-    const card = hands[player][index];
-
-    if (!isPlayable(card)) {
-
-        alert("Match the color or symbol of the active card.");
-
-        return;
-    }
-
-    hands[player].splice(index, 1);
-
-    discard.push(card);
-
-    if (card.type === "wild" || card.type === "wild4") {
-
-        pendingWild = card;
-
-        document.getElementById("wild-overlay")
-            .classList.add("show");
-
-        render();
-
-        return;
-    }
-
-    currentColor = card.color;
-
-    triggerChallenge(card);
-
-    if (hands[player].length === 0) {
-
-        endGame(player);
-
-        return;
-    }
-
-    if (hands[player].length === 1) {
-
-        alert(player + " says UNO! ❤️");
-    }
-
-    applySpecialCard(card);
-
-    render();
-}
-
-// ============================================
-// SPECIAL CARDS
-// ============================================
-
-function applySpecialCard(card) {
-
-    if (card.type === "Skip") {
-
-        nextPlayer();
-
-        document.getElementById("command-text").textContent =
-            players[currentPlayer] + " has been skipped.";
-
-        nextPlayer();
-
-        return;
-    }
-
-    if (card.type === "Reverse") {
-
-        direction *= -1;
-
-        nextPlayer();
-
-        return;
-    }
-
-    if (card.type === "Draw Two") {
-
-        nextPlayer();
-
-        drawCards(2);
-
-        document.getElementById("command-text").textContent =
-            players[currentPlayer] +
-            " draws two cards and misses their turn.";
-
-        nextPlayer();
-
-        return;
-    }
-
-    nextPlayer();
-}
-
-// ============================================
-// WILD COLOR
-// ============================================
-
-function selectWildColor(color) {
-
-    if (!pendingWild) return;
-
-    currentColor = color;
-
-    const card = pendingWild;
-
-    pendingWild = null;
-
-    document.getElementById("wild-overlay")
-        .classList.remove("show");
-
-    triggerChallenge(card);
-
-    const player = players[currentPlayer];
-
-    if (hands[player].length === 0) {
-
-        endGame(player);
-
-        return;
-    }
-
-    if (hands[player].length === 1) {
-
-        alert(player + " says UNO! ❤️");
-    }
-
-    if (card.type === "wild4") {
-
-        nextPlayer();
-
-        drawCards(4);
-
-        document.getElementById("command-text").textContent =
-            players[currentPlayer] +
-            " draws four cards and misses their turn.";
-
-        nextPlayer();
-
-    } else {
-
-        nextPlayer();
-    }
-
-    render();
-}
-
-// ============================================
-// DRAW CARDS
-// ============================================
-
-function drawCards(amount) {
-
-    const player = players[currentPlayer];
-
-    for (let i = 0; i < amount; i++) {
-
-        if (deck.length === 0) {
-            reshuffleDiscard();
-        }
-
-        if (deck.length > 0) {
-            hands[player].push(deck.pop());
-        }
-    }
-}
-
-// ============================================
-// DRAW ONE CARD
-// ============================================
+/*
+=========================================================
+DRAW PROMPT
+=========================================================
+*/
 
 function drawCard() {
+  if (!gameStarted || currentPrompt) return;
 
-    if (gameOver || pendingWild) return;
+  const intensity = document.getElementById("intensity").value;
+  const pool = PROMPTS[intensity];
 
-    drawCards(1);
+  const categories = Object.keys(pool);
+  const category = categories[Math.floor(Math.random() * categories.length)];
 
-    render();
+  const prompts = pool[category];
+  const prompt = prompts[Math.floor(Math.random() * prompts.length)];
 
+  const duration = DURATIONS[Math.floor(Math.random() * DURATIONS.length)];
+
+  currentPrompt = {
+    category,
+    prompt,
+    duration
+  };
+
+  showCard(currentPrompt);
+
+  document.getElementById("drawButton").disabled = true;
+  document.getElementById("doneButton").disabled = false;
+  document.getElementById("passButton").disabled = false;
 }
 
-// ============================================
-// RESHUFFLE DISCARD PILE
-// ============================================
+/*
+=========================================================
+DISPLAY CARD
+=========================================================
+*/
 
-function reshuffleDiscard() {
+function showCard(card) {
+  const cardElement = document.getElementById("gameCard");
 
-    if (discard.length <= 1) return;
+  cardElement.className = "card " + COLORS[card.category];
 
-    const top = discard.pop();
+  document.getElementById("cardCategory").textContent =
+    CATEGORY_LABELS[card.category];
 
-    deck = discard;
+  document.getElementById("cardTitle").textContent =
+    "Your Challenge";
 
-    shuffle(deck);
+  document.getElementById("cardPrompt").textContent =
+    card.prompt;
 
-    discard = [top];
+  document.getElementById("cardTime").textContent =
+    "Suggested time: " + DURATION_LABELS[card.duration];
 }
 
-// ============================================
-// NEXT PLAYER
-// ============================================
+/*
+=========================================================
+COMPLETE OR PASS
+=========================================================
+*/
 
-function nextPlayer() {
+function completeTurn() {
+  if (!currentPrompt) return;
 
-    currentPlayer =
-        (currentPlayer + direction + players.length) %
-        players.length;
+  played++;
+  nextTurn();
 }
-
-// ============================================
-// PASS / END TURN
-// ============================================
 
 function passTurn() {
+  if (!currentPrompt) return;
 
-    if (gameOver || pendingWild) return;
-
-    nextPlayer();
-
-    render();
+  nextTurn();
 }
 
-// ============================================
-// CHALLENGE GENERATOR
-// ============================================
+function nextTurn() {
+  currentPrompt = null;
 
-function triggerChallenge(card) {
+  currentPlayer = (currentPlayer + 1) % players.length;
 
-    let pool = [];
+  document.getElementById("playedCount").textContent = played;
 
-    if (card.color === "wild") {
+  updateTurn();
+  resetCard();
+}
 
-        pool = [
-            "Choose a color that matches your mood and tell your partner why.",
-            "Ask your partner for a romantic challenge of their choice.",
-            "Tell your partner one thing you would love to experience together."
-        ];
+function updateTurn() {
+  document.getElementById("turnName").textContent =
+    players[currentPlayer];
+}
 
-    } else {
+function resetCard() {
+  const cardElement = document.getElementById("gameCard");
 
-        pool = commands[card.color];
+  cardElement.className = "card pink";
+
+  document.getElementById("cardCategory").textContent =
+    "AFTER DARK UNO";
+
+  document.getElementById("cardTitle").textContent =
+    "Draw a Card";
+
+  document.getElementById("cardPrompt").textContent =
+    players[currentPlayer] + ", draw a card to reveal your challenge.";
+
+  document.getElementById("cardTime").textContent = "";
+
+  document.getElementById("drawButton").disabled = false;
+  document.getElementById("doneButton").disabled = true;
+  document.getElementById("passButton").disabled = true;
+}
+
+/*
+=========================================================
+TIMER
+=========================================================
+*/
+
+function startTimer() {
+  if (timerRunning) return;
+
+  if (timerSeconds <= 0) {
+    timerSeconds = currentPrompt
+      ? currentPrompt.duration
+      : 30;
+  }
+
+  timerRunning = true;
+  updateTimerDisplay();
+
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+
+    updateTimerDisplay();
+
+    if (timerSeconds <= 0) {
+      pauseTimer();
+      document.getElementById("timerDisplay").textContent = "Time!";
     }
-
-    let command;
-
-    do {
-
-        command = pool[
-            Math.floor(Math.random() * pool.length)
-        ];
-
-    } while (pool.length > 1 && command === lastChallenge);
-
-    lastChallenge = command;
-
-    document.getElementById("command-title").textContent =
-        "Your Intimate Challenge";
-
-    document.getElementById("command-text").textContent =
-        command;
+  }, 1000);
 }
 
-// ============================================
-// PASS CHALLENGE
-// ============================================
-
-function passChallenge() {
-
-    document.getElementById("command-title").textContent =
-        "Challenge Skipped";
-
-    document.getElementById("command-text").textContent =
-        "No pressure. Choose another challenge or simply enjoy the moment. ❤️";
+function pauseTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval);
+  timerInterval = null;
 }
 
-// ============================================
-// WINNER
-// ============================================
+function resetTimer() {
+  pauseTimer();
 
-function endGame(player) {
+  timerSeconds = currentPrompt
+    ? currentPrompt.duration
+    : 30;
 
-    gameOver = true;
-
-    document.getElementById("winner-text").textContent =
-        player + " wins! ❤️";
-
-    document.getElementById("win-overlay")
-        .classList.add("show");
+  updateTimerDisplay();
 }
 
-// ============================================
-// RESTART
-// ============================================
+function updateTimerDisplay() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
 
-function restartGame() {
-
-    document.getElementById("win-overlay")
-        .classList.remove("show");
-
-    document.getElementById("wild-overlay")
-        .classList.remove("show");
-
-    startGame();
+  document.getElementById("timerDisplay").textContent =
+    String(minutes).padStart(2, "0") + ":" +
+    String(seconds).padStart(2, "0");
 }
 
-// ============================================
-// START
-// ============================================
+/*
+=========================================================
+END GAME
+=========================================================
+*/
 
-startGame();
+function endGame() {
+  pauseTimer();
+
+  gameStarted = false;
+  currentPrompt = null;
+
+  document.getElementById("gamePanel").classList.add("hidden");
+  document.getElementById("timerPanel").classList.add("hidden");
+  document.getElementById("setupPanel").classList.remove("hidden");
+
+  document.getElementById("playedCount").textContent = "0";
+  document.getElementById("timerDisplay").textContent = "00:00";
+}
 
 </script>
-
 </body>
 </html>
